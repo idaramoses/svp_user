@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:svp_admin_pm/presentation/dashboard_page/dashboard_page.dart';
 import 'package:svp_admin_pm/presentation/messages_two_screen/messages_two_screen.dart';
@@ -88,210 +91,233 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
     authProvider.userInfo = _user;
     authProvider.token = token;
   }
-
+  Future<bool> _willPopCallback() {
+    Future.delayed(
+        const Duration(milliseconds: 1000), () {
+      if (Platform.isIOS) {
+        try {
+          exit(0);
+        } catch (e) {
+          SystemNavigator
+              .pop(); // for IOS, not true this, you can make comment this :)
+        }
+      } else {
+        try {
+          SystemNavigator
+              .pop(); // sometimes it cant exit app
+        } catch (e) {
+          exit(
+              0); // so i am giving crash to app ... sad :(
+        }
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        height: getVerticalSize(
-          70,
-        ),
-        leadingWidth: 80,
-        leading: AppbarImage(
+    return WillPopScope(
+      onWillPop: _willPopCallback,
+      child: Scaffold(
+        appBar: CustomAppBar(
           height: getVerticalSize(
-            32,
+            70,
           ),
-          width: getHorizontalSize(
-            64,
-          ),
-          imagePath: ImageConstant.imgSvppnglogo1,
-          margin: getMargin(
-            left: 16,
-            // top: 56,
-            // bottom: 12,
-          ),
-        ),
-        actions: [
-          AppbarImage(
-            height: getSize(
-              24,
+          leadingWidth: 80,
+          leading: AppbarImage(
+            height: getVerticalSize(
+              32,
             ),
-            width: getSize(
-              24,
+            width: getHorizontalSize(
+              64,
             ),
-            svgPath: ImageConstant.imgSearch,
+            imagePath: ImageConstant.imgSvppnglogo1,
             margin: getMargin(
               left: 16,
-              top: 10,
-              right: 12,
-              bottom: 4,
+              // top: 56,
+              // bottom: 12,
             ),
           ),
-          Container(
-            height: getSize(
-              24,
+          actions: [
+            AppbarImage(
+              height: getSize(
+                24,
+              ),
+              width: getSize(
+                24,
+              ),
+              svgPath: ImageConstant.imgSearch,
+              margin: getMargin(
+                left: 16,
+                top: 10,
+                right: 12,
+                bottom: 4,
+              ),
             ),
-            width: getSize(
-              24,
-            ),
-            margin: getMargin(
-              left: 22,
-              top: 25,
-              right: 12,
-              bottom: 4,
-            ),
-            child: Stack(
-              alignment: Alignment.topRight,
-              children: [
-                AppbarImage(
-                  onTap: () {
-                    Navigator.pushNamed(
-                        context, AppRoutes.notificationsOneScreen);
-                  },
-                  height: getSize(
-                    24,
-                  ),
-                  width: getSize(
-                    24,
-                  ),
-                  svgPath: ImageConstant.imgNotification,
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
+            Container(
+              height: getSize(
+                24,
+              ),
+              width: getSize(
+                24,
+              ),
+              margin: getMargin(
+                left: 22,
+                top: 25,
+                right: 12,
+                bottom: 4,
+              ),
+              child: Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  AppbarImage(
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, AppRoutes.notificationsOneScreen);
+                    },
                     height: getSize(
-                      8,
+                      24,
                     ),
                     width: getSize(
-                      8,
+                      24,
                     ),
-                    margin: getMargin(
-                      left: 16,
-                      bottom: 16,
-                    ),
-                    decoration: BoxDecoration(
-                      color: ColorConstant.red500,
-                      borderRadius: BorderRadius.circular(
-                        getHorizontalSize(
-                          4,
+                    svgPath: ImageConstant.imgNotification,
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      height: getSize(
+                        8,
+                      ),
+                      width: getSize(
+                        8,
+                      ),
+                      margin: getMargin(
+                        left: 16,
+                        bottom: 16,
+                      ),
+                      decoration: BoxDecoration(
+                        color: ColorConstant.red500,
+                        borderRadius: BorderRadius.circular(
+                          getHorizontalSize(
+                            4,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          AppbarCircleimage(
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.profileScreen);
-            },
-            imagePath: ImageConstant.imgEllipse12,
-            margin: getMargin(
-              left: 22,
-              top: 8,
-              right: 28,
-            ),
-          ),
-        ],
-        styleType: Style.bgOutlineGray300,
-      ),
-      body: pages[pageIndex],
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: ColorConstant.gray200,
-          border: Border(
-            top: BorderSide(
-              color: ColorConstant.gray300,
-              width: getHorizontalSize(
-                1,
+                ],
               ),
             ),
-          ),
+            AppbarCircleimage(
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.profileScreen);
+              },
+              imagePath: ImageConstant.imgEllipse12,
+              margin: getMargin(
+                left: 22,
+                top: 8,
+                right: 28,
+              ),
+            ),
+          ],
+          styleType: Style.bgOutlineGray300,
         ),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.transparent,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          elevation: 0,
-          currentIndex: pageIndex,
-          type: BottomNavigationBarType.fixed,
-          items: List.generate(bottomMenuList.length, (index) {
-            return BottomNavigationBarItem(
-              icon: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CustomImageView(
-                    svgPath: bottomMenuList[index].icon,
-                    height: getSize(
-                      24,
+        body: pages[pageIndex],
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: ColorConstant.gray200,
+            border: Border(
+              top: BorderSide(
+                color: ColorConstant.gray300,
+                width: getHorizontalSize(
+                  1,
+                ),
+              ),
+            ),
+          ),
+          child: BottomNavigationBar(
+            backgroundColor: Colors.transparent,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            elevation: 0,
+            currentIndex: pageIndex,
+            type: BottomNavigationBarType.fixed,
+            items: List.generate(bottomMenuList.length, (index) {
+              return BottomNavigationBarItem(
+                icon: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CustomImageView(
+                      svgPath: bottomMenuList[index].icon,
+                      height: getSize(
+                        24,
+                      ),
+                      width: getSize(
+                        24,
+                      ),
+                      color: ColorConstant.gray500,
                     ),
-                    width: getSize(
-                      24,
-                    ),
-                    color: ColorConstant.gray500,
-                  ),
-                  Padding(
-                    padding: getPadding(
-                      top: 5,
-                    ),
-                    child: Text(
-                      bottomMenuList[index].title ?? "",
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      style: AppStyle.txtInterMedium12Gray500.copyWith(
-                        letterSpacing: getHorizontalSize(
-                          0.06,
+                    Padding(
+                      padding: getPadding(
+                        top: 5,
+                      ),
+                      child: Text(
+                        bottomMenuList[index].title ?? "",
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                        style: AppStyle.txtInterMedium12Gray500.copyWith(
+                          letterSpacing: getHorizontalSize(
+                            0.06,
+                          ),
+                          color: ColorConstant.gray500,
                         ),
-                        color: ColorConstant.gray500,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              activeIcon: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CustomImageView(
-                    svgPath: bottomMenuList[index].icon,
-                    height: getSize(
-                      24,
+                  ],
+                ),
+                activeIcon: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CustomImageView(
+                      svgPath: bottomMenuList[index].icon,
+                      height: getSize(
+                        24,
+                      ),
+                      width: getSize(
+                        24,
+                      ),
+                      color: ColorConstant.orangeA200,
                     ),
-                    width: getSize(
-                      24,
-                    ),
-                    color: ColorConstant.orangeA200,
-                  ),
-                  Padding(
-                    padding: getPadding(
-                      top: 4,
-                    ),
-                    child: Text(
-                      bottomMenuList[index].title ?? "",
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      style: AppStyle.txtInterBold12Lime700.copyWith(
-                        letterSpacing: getHorizontalSize(
-                          0.06,
+                    Padding(
+                      padding: getPadding(
+                        top: 4,
+                      ),
+                      child: Text(
+                        bottomMenuList[index].title ?? "",
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                        style: AppStyle.txtInterBold12Lime700.copyWith(
+                          letterSpacing: getHorizontalSize(
+                            0.06,
+                          ),
+                          color: ColorConstant.lime700,
                         ),
-                        color: ColorConstant.lime700,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              label: '',
-            );
-          }),
-          onTap: (index) {
-            setState(() {
-              pageIndex = index;
-            });
-          },
+                  ],
+                ),
+                label: '',
+              );
+            }),
+            onTap: (index) {
+              setState(() {
+                pageIndex = index;
+              });
+            },
+          ),
         ),
       ),
     );
