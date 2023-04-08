@@ -41,200 +41,202 @@ class _TasksListTabContainerPageState extends State<TasksListTabContainerPage>
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: ColorConstant.gray200,
-        body: Container(
-          width: double.maxFinite,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: getPadding(
-                  left: 16,
-                  top: 25,
-                ),
-                child: Text(
-                  "ALL TASKS",
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
-                  style: AppStyle.txtSFProTextBold16,
-                ),
-              ),
-              Padding(
-                padding: getPadding(right: 28, top: 25),
-                child: Row(
-                  children: [
-                    Container(
-                      height: getVerticalSize(
-                        40,
-                      ),
-                      width: getHorizontalSize(
-                        120,
-                      ),
-                      margin: getMargin(
-                        left: 16,
-                      ),
-                      decoration: BoxDecoration(
-                        color: ColorConstant.whiteA700,
-                        borderRadius: BorderRadius.circular(
-                          getHorizontalSize(
-                            8,
-                          ),
+      child: NestedScrollView(
+        scrollDirection: Axis.vertical,
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverToBoxAdapter(
+            //headerSilverBuilder only accepts slivers
+            child: Container(
+              color: ColorConstant.gray200,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: getPadding(
+                          left: 16,
+                          top: 25,
                         ),
-                        border: Border.all(
-                          color: ColorConstant.gray300,
+                        child: Text(
+                          "ALL TASKS",
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          style: AppStyle.txtSFProTextBold16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: getPadding(right: 28, top: 25),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: getVerticalSize(
+                            40,
+                          ),
                           width: getHorizontalSize(
-                            1,
+                            120,
+                          ),
+                          margin: getMargin(
+                            left: 16,
+                          ),
+                          decoration: BoxDecoration(
+                            color: ColorConstant.whiteA700,
+                            borderRadius: BorderRadius.circular(
+                              getHorizontalSize(
+                                8,
+                              ),
+                            ),
+                            border: Border.all(
+                              color: ColorConstant.gray300,
+                              width: getHorizontalSize(
+                                1,
+                              ),
+                            ),
+                          ),
+                          child: TabBar(
+                            //TODO: Please add tab controller
+                            controller: tabController,
+                            labelPadding: EdgeInsets.all(7),
+                            indicator: BoxDecoration(
+                              color: ColorConstant.orangeA200A2,
+                              borderRadius: BorderRadius.circular(
+                                getHorizontalSize(
+                                  8,
+                                ),
+                              ),
+                              border: Border.all(
+                                color: ColorConstant.orangeA200A2,
+                                width: getHorizontalSize(
+                                  1,
+                                ),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: ColorConstant.gray80026,
+                                  spreadRadius: getHorizontalSize(
+                                    2,
+                                  ),
+                                  blurRadius: getHorizontalSize(
+                                    2,
+                                  ),
+                                  offset: Offset(
+                                    2,
+                                    0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            tabs: [
+                              Tab(
+                                child: CustomImageView(
+                                  color: _selectedIndex == 0
+                                      ? Colors.white
+                                      : ColorConstant.orangeA200A2,
+                                  svgPath: ImageConstant.imgMenuWhiteA700,
+                                  height: getSize(
+                                    34,
+                                  ),
+                                  width: getSize(
+                                    34,
+                                  ),
+                                ),
+                              ),
+                              Tab(
+                                child: CustomImageView(
+                                  color: _selectedIndex == 1
+                                      ? Colors.white
+                                      : ColorConstant.orangeA200A2,
+                                  svgPath: ImageConstant.imgGridOrangeA200,
+                                  height: getSize(
+                                    24,
+                                  ),
+                                  width: getSize(
+                                    24,
+                                  ),
+                                ),
+                              ),
+                              Tab(
+                                child: CustomImageView(
+                                  color: _selectedIndex == 2
+                                      ? Colors.white
+                                      : ColorConstant.orangeA200A2,
+                                  svgPath: ImageConstant.imgCalendarOrangeA200,
+                                  height: getSize(
+                                    24,
+                                  ),
+                                  width: getSize(
+                                    24,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      child: TabBar(
-                        //TODO: Please add tab controller
-                        controller: tabController,
-                        labelPadding: EdgeInsets.all(7),
-                        indicator: BoxDecoration(
-                          color: ColorConstant.orangeA200A2,
-                          borderRadius: BorderRadius.circular(
-                            getHorizontalSize(
-                              8,
-                            ),
+                        Spacer(),
+                        Padding(
+                          padding: getPadding(
+                            top: 10,
+                            bottom: 12,
                           ),
-                          border: Border.all(
-                            color: ColorConstant.orangeA200A2,
-                            width: getHorizontalSize(
-                              1,
-                            ),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Filter: ",
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.left,
+                                style: AppStyle.txtSFProTextMedium14Gray500,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_down_sharp,
+                                color: Colors.grey,
+                              )
+                            ],
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: ColorConstant.gray80026,
-                              spreadRadius: getHorizontalSize(
-                                2,
-                              ),
-                              blurRadius: getHorizontalSize(
-                                2,
-                              ),
-                              offset: Offset(
-                                2,
-                                0,
-                              ),
-                            ),
-                          ],
                         ),
-                        tabs: [
-                          Tab(
-                            child: CustomImageView(
-                              color: _selectedIndex == 0
-                                  ? Colors.white
-                                  : ColorConstant.orangeA200A2,
-                              svgPath: ImageConstant.imgMenuWhiteA700,
-                              height: getSize(
-                                34,
-                              ),
-                              width: getSize(
-                                34,
-                              ),
-                            ),
+                        Padding(
+                          padding: getPadding(
+                            left: 25,
+                            top: 12,
+                            bottom: 10,
                           ),
-                          Tab(
-                            child: CustomImageView(
-                              color: _selectedIndex == 1
-                                  ? Colors.white
-                                  : ColorConstant.orangeA200A2,
-                              svgPath: ImageConstant.imgGridOrangeA200,
-                              height: getSize(
-                                24,
+                          child: Row(
+                            children: [
+                              Text(
+                                "Sort by:",
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.left,
+                                style: AppStyle.txtSFProTextMedium14Gray500,
                               ),
-                              width: getSize(
-                                24,
+                              SizedBox(
+                                width: 5,
                               ),
-                            ),
+                              Icon(
+                                Icons.keyboard_arrow_down_sharp,
+                                color: Colors.grey,
+                              )
+                            ],
                           ),
-                          Tab(
-                            child: CustomImageView(
-                              color: _selectedIndex == 2
-                                  ? Colors.white
-                                  : ColorConstant.orangeA200A2,
-                              svgPath: ImageConstant.imgCalendarOrangeA200,
-                              height: getSize(
-                                24,
-                              ),
-                              width: getSize(
-                                24,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Spacer(),
-                    Padding(
-                      padding: getPadding(
-                        top: 10,
-                        bottom: 12,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Filter: ",
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
-                            style: AppStyle.txtSFProTextMedium14Gray500,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            color: Colors.grey,
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: getPadding(
-                        left: 25,
-                        top: 12,
-                        bottom: 10,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Sort by:",
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
-                            style: AppStyle.txtSFProTextMedium14Gray500,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            color: Colors.grey,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Container(
-                height: getVerticalSize(
-                  552,
-                ),
-                child: TabBarView(
-                  controller: tabController,
-                  //TODO: Please add tab controller
-                  children: [
-                    TasksListPage(),
-                    TasksGridPage(),
-                    TasksCalendarPage(),
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
+        ],
+        body: TabBarView(
+          controller: tabController,
+          //TODO: Please add tab controller
+          children: [
+            TasksListPage(),
+            TasksGridPage(),
+            TasksCalendarPage(),
+          ],
         ),
       ),
     );

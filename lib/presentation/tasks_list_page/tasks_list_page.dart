@@ -36,7 +36,7 @@ class _TasksListPageState extends State<TasksListPage> with FlushBarMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: ColorConstant.gray200,
       body: SizedBox(
         width: size.width,
         child: SingleChildScrollView(
@@ -68,7 +68,11 @@ class _TasksListPageState extends State<TasksListPage> with FlushBarMixin {
                         },
                         itemCount: 10,
                         itemBuilder: (context, index) {
-                          return TasksListItemWidget();
+                          return index == 2
+                              ? TasksListItemWidgetcomplete()
+                              : index == 5
+                                  ? TasksListItemWidgetpending()
+                                  : TasksListItemWidget();
                         },
                       ),
                     ),

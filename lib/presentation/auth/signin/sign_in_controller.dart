@@ -49,7 +49,8 @@ class SignInController with FlushBarMixin {
         getuserprofile();
         showSuccessNotification(context, "Sign in successful");
 
-        Navigator.pushNamed(context, AppRoutes.maindashboardOneScreen);
+        Navigator.pushReplacementNamed(
+            context, AppRoutes.maindashboardOneScreen);
       } else if (response["status"] == "500 Internal Server Error" &&
           response["message"] ==
               "Incorrect Password! Please check and try again.") {

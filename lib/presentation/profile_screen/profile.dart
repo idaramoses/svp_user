@@ -302,7 +302,7 @@ class _Profile_ScreenState extends State<Profile_Screen> with FlushBarMixin {
                                     SignInController(context: context)
                                         .signOut()
                                         .whenComplete(() {
-                                      Navigator.pushNamed(
+                                      Navigator.pushReplacementNamed(
                                           context, AppRoutes.signinScreen);
                                       showSuccessNotification(
                                           context, "Log out successful");

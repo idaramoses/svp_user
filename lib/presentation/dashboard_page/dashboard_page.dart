@@ -439,9 +439,15 @@ class DashboardPage extends StatelessWidget {
                             ),
                           );
                         },
-                        itemCount: 4,
+                        itemCount: 5,
                         itemBuilder: (context, index) {
-                          return Dashboard1ItemWidget();
+                          return index == 1
+                              ? Dashboard1ItemWidgecompete()
+                              : index == 3
+                                  ? Dashboard1ItemWidgecompete()
+                                  : index == 4
+                                      ? Dashboard1ItemWidgepending()
+                                      : Dashboard1ItemWidget();
                         },
                       ),
                     ),
