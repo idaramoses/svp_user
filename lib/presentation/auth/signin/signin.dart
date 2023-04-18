@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:svp_admin_pm/core/app_export.dart';
 import 'package:svp_admin_pm/presentation/auth/signin/sign_in_controller.dart';
 import 'package:svp_admin_pm/widgets/custom_button.dart';
@@ -21,6 +24,24 @@ class _signinState extends State<signin> {
   bool ispasswordValid = false;
 
   bool issec = true;
+  Future<bool> _willPopCallback() {
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      if (Platform.isIOS) {
+        try {
+          exit(0);
+        } catch (e) {
+          SystemNavigator
+              .pop(); // for IOS, not true this, you can make comment this :)
+        }
+      } else {
+        try {
+          SystemNavigator.pop(); // sometimes it cant exit app
+        } catch (e) {
+          exit(0); // so i am giving crash to app ... sad :(
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +71,7 @@ class _signinState extends State<signin> {
             cursorColor: ColorConstant.orangeA200,
             decoration: InputDecoration(
               labelText: "Enter your email",
+              hintText: 'testuser@saharaviewpoint.com',
               labelStyle: TextStyle(color: ColorConstant.black900),
               suffixIcon: Padding(
                   padding: const EdgeInsetsDirectional.only(start: 30),
@@ -93,6 +115,7 @@ class _signinState extends State<signin> {
             cursorColor: ColorConstant.orangeA200,
             decoration: InputDecoration(
                 labelText: "Password",
+                hintText: 'password',
                 labelStyle: TextStyle(color: ColorConstant.black900),
                 suffixIcon: Container(
                   margin: getMargin(
@@ -144,331 +167,328 @@ class _signinState extends State<signin> {
           ),
         ));
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: ColorConstant.gray200,
-        resizeToAvoidBottomInset: false,
-        body: Form(
-          key: _formKey,
-          child: Container(
-            width: double.maxFinite,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                isLoading ? LinearProgressIndicator() : SizedBox(),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      padding: getPadding(
-                        left: 15,
-                        top: 48,
-                        right: 15,
-                        bottom: 48,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          CustomImageView(
-                            imagePath: ImageConstant.imgSvplogoprimary,
-                            height: getVerticalSize(
-                              32,
-                            ),
-                            width: getHorizontalSize(
-                              128,
-                            ),
-                            margin: getMargin(
-                              left: 1,
-                            ),
+    return Scaffold(
+      backgroundColor: ColorConstant.gray200,
+      resizeToAvoidBottomInset: false,
+      body: Form(
+        key: _formKey,
+        child: Container(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              isLoading ? LinearProgressIndicator() : SizedBox(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: getPadding(
+                      left: 15,
+                      top: 48,
+                      right: 15,
+                      bottom: 48,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CustomImageView(
+                          imagePath: ImageConstant.imgSvplogoprimary,
+                          height: getVerticalSize(
+                            32,
                           ),
-                          Padding(
-                            padding: getPadding(
-                              left: 1,
-                              top: 32,
-                            ),
-                            child: Text(
-                              "Welcome to Sahara Viewpoint,",
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.left,
-                              style: AppStyle.txtSFProTextSemibold18OrangeA200,
-                            ),
+                          width: getHorizontalSize(
+                            128,
                           ),
-                          Padding(
-                            padding: getPadding(
-                              left: 1,
-                              top: 21,
-                            ),
-                            child: Text(
-                              "Login to continue.",
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.left,
-                              style: AppStyle.txtInterSemiBold16,
-                            ),
+                          margin: getMargin(
+                            left: 1,
                           ),
-                          Padding(
-                            padding: getPadding(
-                              left: 1,
-                              top: 23,
-                            ),
-                            child: Text(
-                              "Email",
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.left,
-                              style: AppStyle.txtSFProTextSemibold16Gray800,
-                            ),
+                        ),
+                        Padding(
+                          padding: getPadding(
+                            left: 1,
+                            top: 32,
                           ),
-                          emailTextField,
-                          Padding(
-                            padding: getPadding(
-                              left: 1,
-                              top: 23,
-                            ),
-                            child: Text(
-                              "Password",
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.left,
-                              style: AppStyle.txtSFProTextSemibold16Gray800,
-                            ),
+                          child: Text(
+                            "Welcome to Sahara Viewpoint,",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: AppStyle.txtSFProTextSemibold18OrangeA200,
                           ),
-                          passwordTextField,
-                          Padding(
-                            padding: getPadding(
-                              left: 1,
-                              top: 16,
-                              right: 1,
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomImageView(
-                                  svgPath:
-                                      ImageConstant.imgComputerGray50024x24,
-                                  height: getSize(
-                                    24,
-                                  ),
-                                  width: getSize(
-                                    24,
-                                  ),
+                        ),
+                        Padding(
+                          padding: getPadding(
+                            left: 1,
+                            top: 21,
+                          ),
+                          child: Text(
+                            "Login to continue.",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: AppStyle.txtInterSemiBold16,
+                          ),
+                        ),
+                        Padding(
+                          padding: getPadding(
+                            left: 1,
+                            top: 23,
+                          ),
+                          child: Text(
+                            "Email",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: AppStyle.txtSFProTextSemibold16Gray800,
+                          ),
+                        ),
+                        emailTextField,
+                        Padding(
+                          padding: getPadding(
+                            left: 1,
+                            top: 23,
+                          ),
+                          child: Text(
+                            "Password",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: AppStyle.txtSFProTextSemibold16Gray800,
+                          ),
+                        ),
+                        passwordTextField,
+                        Padding(
+                          padding: getPadding(
+                            left: 1,
+                            top: 16,
+                            right: 1,
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomImageView(
+                                svgPath: ImageConstant.imgComputerGray50024x24,
+                                height: getSize(
+                                  24,
                                 ),
-                                Padding(
-                                  padding: getPadding(
-                                    left: 8,
-                                    top: 2,
-                                    bottom: 4,
-                                  ),
-                                  child: Text(
-                                    "Remember me",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.left,
-                                    style: AppStyle.txtSFProTextRegular14,
-                                  ),
+                                width: getSize(
+                                  24,
                                 ),
-                                Spacer(),
-                                Padding(
-                                  padding: getPadding(
-                                    top: 4,
-                                    bottom: 2,
-                                  ),
-                                  child: Text(
-                                    "Forgot Password?",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.left,
-                                    style: AppStyle
-                                        .txtSFProTextRegular14OrangeA200,
-                                  ),
+                              ),
+                              Padding(
+                                padding: getPadding(
+                                  left: 8,
+                                  top: 2,
+                                  bottom: 4,
                                 ),
-                              ],
-                            ),
+                                child: Text(
+                                  "Remember me",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.left,
+                                  style: AppStyle.txtSFProTextRegular14,
+                                ),
+                              ),
+                              Spacer(),
+                              Padding(
+                                padding: getPadding(
+                                  top: 4,
+                                  bottom: 2,
+                                ),
+                                child: Text(
+                                  "Forgot Password?",
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.left,
+                                  style:
+                                      AppStyle.txtSFProTextRegular14OrangeA200,
+                                ),
+                              ),
+                            ],
                           ),
-                          isLoading
-                              ? Center(
-                                  child: Container(
-                                    height: getVerticalSize(
-                                      51,
-                                    ),
-                                    width: getVerticalSize(
-                                      51,
-                                    ),
-                                    margin: getMargin(
-                                      left: 1,
-                                      top: 51,
-                                    ),
-                                    child: CircularProgressIndicator(
-                                      color: Colors.orange,
-                                    ),
-                                  ),
-                                )
-                              : CustomButton(
+                        ),
+                        isLoading
+                            ? Center(
+                                child: Container(
                                   height: getVerticalSize(
                                     51,
                                   ),
-                                  text: "Login",
+                                  width: getVerticalSize(
+                                    51,
+                                  ),
                                   margin: getMargin(
                                     left: 1,
-                                    top: 32,
+                                    top: 51,
                                   ),
-                                  onTap: () async {
-                                    validateAndSubmit();
-                                  },
-                                  variant: ButtonVariant.FillOrangeA200,
-                                  padding: ButtonPadding.PaddingAll11,
-                                  fontStyle:
-                                      ButtonFontStyle.SFProTextBold16WhiteA700,
-                                ),
-                          Container(
-                            height: getVerticalSize(
-                              56,
-                            ),
-                            width: getHorizontalSize(
-                              344,
-                            ),
-                            margin: getMargin(
-                              left: 1,
-                              top: 51,
-                            ),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Padding(
-                                    padding: getPadding(
-                                      top: 5,
-                                      bottom: 30,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: getPadding(
-                                            top: 8,
-                                            bottom: 10,
-                                          ),
-                                          child: SizedBox(
-                                            width: getHorizontalSize(
-                                              144,
-                                            ),
-                                            child: Divider(
-                                              height: getVerticalSize(
-                                                1,
-                                              ),
-                                              thickness: getVerticalSize(
-                                                1,
-                                              ),
-                                              color: ColorConstant.gray300,
-                                            ),
-                                          ),
-                                        ),
-                                        Text(
-                                          "or",
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.left,
-                                          style: AppStyle
-                                              .txtSFProTextMedium14Gray600,
-                                        ),
-                                        Padding(
-                                          padding: getPadding(
-                                            top: 8,
-                                            bottom: 10,
-                                          ),
-                                          child: SizedBox(
-                                            width: getHorizontalSize(
-                                              144,
-                                            ),
-                                            child: Divider(
-                                              height: getVerticalSize(
-                                                1,
-                                              ),
-                                              thickness: getVerticalSize(
-                                                1,
-                                              ),
-                                              color: ColorConstant.gray300,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                  child: CircularProgressIndicator(
+                                    color: Colors.orange,
                                   ),
                                 ),
-                                CustomButton(
-                                  height: getVerticalSize(
-                                    56,
-                                  ),
-                                  width: getHorizontalSize(
-                                    336,
-                                  ),
-                                  text: "Sign up with Google",
-                                  variant: ButtonVariant.OutlineGray100,
-                                  padding: ButtonPadding.PaddingAll7,
-                                  fontStyle: ButtonFontStyle.SFProTextMedium12,
-                                  prefixWidget: Container(
-                                    margin: getMargin(
-                                      right: 16,
-                                    ),
-                                    child: CustomImageView(
-                                      svgPath: ImageConstant.imgGoogle,
-                                    ),
-                                  ),
-                                  alignment: Alignment.center,
+                              )
+                            : CustomButton(
+                                height: getVerticalSize(
+                                  51,
                                 ),
-                              ],
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: getPadding(
-                                top: 32,
-                                right: 2,
-                                bottom: 189,
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, AppRoutes.signupScreen);
+                                text: "Login",
+                                margin: getMargin(
+                                  left: 1,
+                                  top: 32,
+                                ),
+                                onTap: () async {
+                                  validateAndSubmit();
                                 },
-                                child: RichText(
-                                  text: TextSpan(
+                                variant: ButtonVariant.FillOrangeA200,
+                                padding: ButtonPadding.PaddingAll11,
+                                fontStyle:
+                                    ButtonFontStyle.SFProTextBold16WhiteA700,
+                              ),
+                        Container(
+                          height: getVerticalSize(
+                            56,
+                          ),
+                          width: getHorizontalSize(
+                            344,
+                          ),
+                          margin: getMargin(
+                            left: 1,
+                            top: 51,
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Align(
+                                alignment: Alignment.topCenter,
+                                child: Padding(
+                                  padding: getPadding(
+                                    top: 5,
+                                    bottom: 30,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      TextSpan(
-                                        text: "Don't have an account?",
-                                        style: TextStyle(
-                                          color: ColorConstant.gray800,
-                                          fontSize: getFontSize(
-                                            16,
+                                      Padding(
+                                        padding: getPadding(
+                                          top: 8,
+                                          bottom: 10,
+                                        ),
+                                        child: SizedBox(
+                                          width: getHorizontalSize(
+                                            144,
                                           ),
-                                          fontFamily: 'SF Pro Text',
-                                          fontWeight: FontWeight.w400,
+                                          child: Divider(
+                                            height: getVerticalSize(
+                                              1,
+                                            ),
+                                            thickness: getVerticalSize(
+                                              1,
+                                            ),
+                                            color: ColorConstant.gray300,
+                                          ),
                                         ),
                                       ),
-                                      TextSpan(
-                                        text: "  Create Account.",
-                                        style: TextStyle(
-                                          color: ColorConstant.orangeA200,
-                                          fontSize: getFontSize(
-                                            16,
+                                      Text(
+                                        "or",
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.left,
+                                        style: AppStyle
+                                            .txtSFProTextMedium14Gray600,
+                                      ),
+                                      Padding(
+                                        padding: getPadding(
+                                          top: 8,
+                                          bottom: 10,
+                                        ),
+                                        child: SizedBox(
+                                          width: getHorizontalSize(
+                                            144,
                                           ),
-                                          fontFamily: 'SF Pro Text',
-                                          fontWeight: FontWeight.w600,
+                                          child: Divider(
+                                            height: getVerticalSize(
+                                              1,
+                                            ),
+                                            thickness: getVerticalSize(
+                                              1,
+                                            ),
+                                            color: ColorConstant.gray300,
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  textAlign: TextAlign.left,
                                 ),
+                              ),
+                              CustomButton(
+                                height: getVerticalSize(
+                                  56,
+                                ),
+                                width: getHorizontalSize(
+                                  336,
+                                ),
+                                text: "Sign up with Google",
+                                variant: ButtonVariant.OutlineGray100,
+                                padding: ButtonPadding.PaddingAll7,
+                                fontStyle: ButtonFontStyle.SFProTextMedium12,
+                                prefixWidget: Container(
+                                  margin: getMargin(
+                                    right: 16,
+                                  ),
+                                  child: CustomImageView(
+                                    svgPath: ImageConstant.imgGoogle,
+                                  ),
+                                ),
+                                alignment: Alignment.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: getPadding(
+                              top: 32,
+                              right: 2,
+                              bottom: 189,
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.signupScreen);
+                              },
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "Don't have an account?",
+                                      style: TextStyle(
+                                        color: ColorConstant.gray800,
+                                        fontSize: getFontSize(
+                                          16,
+                                        ),
+                                        fontFamily: 'SF Pro Text',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "  Create Account.",
+                                      style: TextStyle(
+                                        color: ColorConstant.orangeA200,
+                                        fontSize: getFontSize(
+                                          16,
+                                        ),
+                                        fontFamily: 'SF Pro Text',
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                textAlign: TextAlign.left,
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

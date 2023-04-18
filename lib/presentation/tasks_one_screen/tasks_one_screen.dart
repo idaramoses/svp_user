@@ -20,11 +20,17 @@ class TasksOneScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
+                        height: getVerticalSize(
+                          70,
+                        ),
                         width: double.maxFinite,
                         child: Container(
                           width: double.maxFinite,
                           padding: getPadding(
-                            all: 16,
+                            // all: 16,
+                            bottom: 8,
+                            left: 10,
+                            right: 16,
                           ),
                           decoration: AppDecoration.outlineGray300,
                           child: Column(
@@ -32,17 +38,31 @@ class TasksOneScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              CustomImageView(
-                                svgPath: ImageConstant.imgOverflowmenu,
-                                height: getSize(
-                                  24,
-                                ),
-                                width: getSize(
-                                  24,
-                                ),
-                                margin: getMargin(
-                                  top: 44,
-                                ),
+                              Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      padding: const EdgeInsets.all(2.0),
+                                      icon: Icon(
+                                        Icons.arrow_back,
+                                        color: ColorConstant.orangeA200,
+                                      )),
+                                  Spacer(),
+                                  CustomImageView(
+                                    svgPath: ImageConstant.imgOverflowmenu,
+                                    height: getSize(
+                                      24,
+                                    ),
+                                    width: getSize(
+                                      24,
+                                    ),
+                                    margin: getMargin(
+                                      top: 10,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),

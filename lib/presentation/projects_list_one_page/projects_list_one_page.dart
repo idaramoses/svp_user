@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:pk_skeleton/pk_skeleton.dart';
 import 'package:svp_admin_pm/core/app_export.dart';
 import 'package:svp_admin_pm/models/project.dart';
+import 'package:svp_admin_pm/presentation/projects_list_one_page/project_controller.dart';
 
 import '../../widgets/custom_button.dart';
 import '../dashboard_page/widgets/dashboard1_item_widget.dart';
@@ -320,65 +317,61 @@ class ProjectsListOneNewPage extends StatelessWidget {
   }
 }
 
-class ProjectsListTwoNewPage extends StatefulWidget {
+class ProjectScreen extends StatefulWidget {
+  const ProjectScreen({Key key}) : super(key: key);
+
   @override
-  State<ProjectsListTwoNewPage> createState() => _ProjectsListTwoNewPageState();
+  _ProjectScreenState createState() => _ProjectScreenState();
 }
 
-class _ProjectsListTwoNewPageState extends State<ProjectsListTwoNewPage> {
-  Future<List<Projects>> getRequest() async {
-    //replace your restFull API here.
-    String url = "https://jsonplaceholder.typicode.com/posts";
-    final response = await http.get(Uri.parse(url));
+class _ProjectScreenState extends State<ProjectScreen> {
+  List<ProjectModel> _userModel = [];
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
 
-    var responseData = json.decode(response.body);
-
-    //Creating a list to store input data;
-    List<Projects> users = [];
-    for (var singleUser in responseData) {
-      Projects user = Projects(
-          id: singleUser["id"],
-          ProjectsId: singleUser["userId"],
-          title: singleUser["title"],
-          body: singleUser["body"]);
-
-      //Adding user to the list.
-      users.add(user);
-    }
-    return users;
+  void _getData() async {
+    _userModel = (await ProjectController().getuserprofile());
+    Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: FutureBuilder(
-        future: getRequest(),
-        builder: (BuildContext ctx, AsyncSnapshot snapshot) {
-          if (snapshot.data == null) {
-            return loader();
-          } else {
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (ctx, index) => ListTile(
-                title: Text(snapshot.data[index].title),
-                subtitle: Text(snapshot.data[index].body),
-                contentPadding: EdgeInsets.only(
-                  bottom: 20.0,
-                ),
-              ),
-            );
-          }
-        },
-      ),
-    );
-  }
-
-  Widget loader() {
-    return ListView.builder(
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        return PKCardSkeleton();
-      },
+    return Scaffold(
+      body: _userModel == null || _userModel.isEmpty
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
+              itemCount: _userModel.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(_userModel[index].id.toString()),
+                          // Text(_userModel[index].details),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // Text(_userModel[index].user_status),
+                          // Text(_userModel[index].admin_Status),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
     );
   }
 }

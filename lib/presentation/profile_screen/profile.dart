@@ -21,9 +21,9 @@ class _Profile_ScreenState extends State<Profile_Screen> with FlushBarMixin {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Consumer<AuthProvider>(
-        builder: (context, value, child) => Scaffold(
+    return Consumer<AuthProvider>(
+      builder: (context, value, child) => SafeArea(
+        child: Scaffold(
           backgroundColor: ColorConstant.gray200,
           resizeToAvoidBottomInset: false,
           body: Container(
@@ -39,7 +39,10 @@ class _Profile_ScreenState extends State<Profile_Screen> with FlushBarMixin {
                   child: Container(
                     width: double.maxFinite,
                     padding: getPadding(
-                      all: 16,
+                      // all: 16,
+                      bottom: 8,
+                      left: 10,
+                      right: 16,
                     ),
                     decoration: AppDecoration.outlineGray300,
                     child: Column(
@@ -49,20 +52,15 @@ class _Profile_ScreenState extends State<Profile_Screen> with FlushBarMixin {
                       children: [
                         Row(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Container(
-                                margin: getMargin(
-                                  top: 10,
-                                ),
-                                child: Icon(
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                padding: const EdgeInsets.all(2.0),
+                                icon: Icon(
                                   Icons.arrow_back,
                                   color: ColorConstant.orangeA200,
-                                ),
-                              ),
-                            ),
+                                )),
                             Spacer(),
                             CustomImageView(
                               svgPath: ImageConstant.imgOverflowmenu,
@@ -303,7 +301,7 @@ class _Profile_ScreenState extends State<Profile_Screen> with FlushBarMixin {
                                         .signOut()
                                         .whenComplete(() {
                                       Navigator.pushReplacementNamed(
-                                          context, AppRoutes.signinScreen);
+                                          context, AppRoutes.onboardScreen);
                                       showSuccessNotification(
                                           context, "Log out successful");
                                     });

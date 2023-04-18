@@ -32,11 +32,17 @@ class ProjectsOneScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
+                        height: getVerticalSize(
+                          70,
+                        ),
                         width: double.maxFinite,
                         child: Container(
                           width: double.maxFinite,
                           padding: getPadding(
-                            all: 16,
+                            // all: 16,
+                            bottom: 8,
+                            left: 10,
+                            right: 16,
                           ),
                           decoration: AppDecoration.outlineGray300,
                           child: Column(
@@ -46,20 +52,15 @@ class ProjectsOneScreen extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Container(
-                                      margin: getMargin(
-                                        top: 44,
-                                      ),
-                                      child: Icon(
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      padding: const EdgeInsets.all(2.0),
+                                      icon: Icon(
                                         Icons.arrow_back,
                                         color: ColorConstant.orangeA200,
-                                      ),
-                                    ),
-                                  ),
+                                      )),
                                   Spacer(),
                                   CustomImageView(
                                     svgPath: ImageConstant.imgOverflowmenu,
@@ -70,7 +71,7 @@ class ProjectsOneScreen extends StatelessWidget {
                                       24,
                                     ),
                                     margin: getMargin(
-                                      top: 44,
+                                      top: 10,
                                     ),
                                   ),
                                 ],

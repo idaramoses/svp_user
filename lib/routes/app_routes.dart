@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:svp_admin_pm/presentation/dashboard_container_screen/dashboard_container_screen.dart';
 import 'package:svp_admin_pm/presentation/dashboard_one_screen/dashboard_one_screen.dart';
+import 'package:svp_admin_pm/presentation/messages_five_page/messages_five_page.dart';
 import 'package:svp_admin_pm/presentation/messages_four_screen/messages_four_screen.dart';
 import 'package:svp_admin_pm/presentation/messages_one_screen/messages_one_screen.dart';
 import 'package:svp_admin_pm/presentation/messages_screen/messages_screen.dart';
@@ -26,6 +27,9 @@ import 'package:svp_admin_pm/presentation/upload_reports_screen/upload_reports_s
 import '../presentation/auth/signin/signin.dart';
 import '../presentation/auth/signup/signup.dart';
 import '../presentation/main_dashboard/user_dashboard.dart';
+import '../presentation/onboarding_page/onboarding_screen.dart';
+import '../presentation/onboarding_page/waitlist/waitlist.dart';
+import '../presentation/onboarding_page/welcome.dart';
 import '../presentation/profile_screen/profile.dart';
 
 class AppRoutes {
@@ -112,7 +116,16 @@ class AppRoutes {
 
   static const String profileScreen = '/profile_screen';
 
+  static const String onboardScreen = '/onboard_screen';
+
+  static const String welcomeScreen = '/welcome_screen';
+
+  static const String waitlistScreen = '/waitlist_screen';
+
   static Map<String, WidgetBuilder> routes = {
+    welcomeScreen: (context) => WelcomeScreen(),
+    waitlistScreen: (context) => Waitlist(),
+    onboardScreen: (context) => OnboardingScreen(),
     signupScreen: (context) => signup(),
     signinScreen: (context) => signin(),
     profileScreen: (context) => Profile_Screen(),
@@ -136,6 +149,7 @@ class AppRoutes {
     messagesTwoScreen: (context) => MessagesTwoScreen(),
     messagesFourScreen: (context) => MessagesFourScreen(),
     messagesThreeScreen: (context) => MessagesThreeScreen(),
+    messagesFivePage: (context) => MessagesFivePage(),
     newProjectFormScreen: (context) => NewProjectFormScreen(),
     reportsGridScreen: (context) => ReportsGridScreen(),
     notificationsOneScreen: (context) => NotificationsOneScreen(),

@@ -102,285 +102,300 @@ class DashboardPage extends StatelessWidget {
                         mainAxisSpacing: 10,
                         crossAxisCount: 2,
                         children: <Widget>[
-                          Container(
-                            padding: getPadding(
-                              left: 16,
-                              top: 14,
-                              right: 16,
-                              bottom: 14,
-                            ),
-                            decoration:
-                                AppDecoration.outlineOrangeA200.copyWith(
-                              borderRadius: BorderRadiusStyle.circleBorder16,
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: getPadding(
-                                    top: 1,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      CustomImageView(
-                                        svgPath:
-                                            ImageConstant.imgComputerGray500,
-                                        color: ColorConstant.orangeA200,
-                                        height: getSize(
-                                          32,
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.pushNamed(context, AppRoutes.projectsOneScreen);
+                            },
+                            child: Container(
+                              padding: getPadding(
+                                left: 16,
+                                top: 14,
+                                right: 16,
+                                bottom: 14,
+                              ),
+                              decoration:
+                                  AppDecoration.outlineOrangeA200.copyWith(
+                                borderRadius: BorderRadiusStyle.circleBorder16,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: getPadding(
+                                      top: 1,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        CustomImageView(
+                                          svgPath:
+                                              ImageConstant.imgComputerGray500,
+                                          color: ColorConstant.orangeA200,
+                                          height: getSize(
+                                            32,
+                                          ),
+                                          width: getSize(
+                                            32,
+                                          ),
                                         ),
-                                        width: getSize(
-                                          32,
+                                        CustomImageView(
+                                          svgPath: ImageConstant.imgArrowright,
+                                          height: getSize(
+                                            24,
+                                          ),
+                                          width: getSize(
+                                            24,
+                                          ),
+                                          margin: getMargin(
+                                            left: 80,
+                                            top: 4,
+                                            bottom: 4,
+                                          ),
                                         ),
-                                      ),
-                                      CustomImageView(
-                                        svgPath: ImageConstant.imgArrowright,
-                                        height: getSize(
-                                          24,
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: getPadding(
+                                      top: 12,
+                                    ),
+                                    child: Text(
+                                      "Projects",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: AppStyle.txtSFProTextBold16,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: getPadding(
+                                      top: 10,
+                                    ),
+                                    child: Text(
+                                      "7",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: AppStyle.txtInterSemiBold24,
+                                    ),
+                                  ),
+                                  Container(
+                                    width: getHorizontalSize(
+                                      113,
+                                    ),
+                                    margin: getMargin(
+                                      top: 11,
+                                    ),
+                                    child: Text(
+                                      "You have 7 ongoing Projects.",
+                                      maxLines: null,
+                                      textAlign: TextAlign.left,
+                                      style:
+                                          AppStyle.txtSFProTextMedium12.copyWith(
+                                        letterSpacing: getHorizontalSize(
+                                          0.06,
                                         ),
-                                        width: getSize(
-                                          24,
-                                        ),
-                                        margin: getMargin(
-                                          left: 80,
-                                          top: 4,
-                                          bottom: 4,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: getPadding(
-                                    top: 12,
-                                  ),
-                                  child: Text(
-                                    "Projects",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.left,
-                                    style: AppStyle.txtSFProTextBold16,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: getPadding(
-                                    top: 10,
-                                  ),
-                                  child: Text(
-                                    "7",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.left,
-                                    style: AppStyle.txtInterSemiBold24,
-                                  ),
-                                ),
-                                Container(
-                                  width: getHorizontalSize(
-                                    113,
-                                  ),
-                                  margin: getMargin(
-                                    top: 11,
-                                  ),
-                                  child: Text(
-                                    "You have 7 ongoing Projects.",
-                                    maxLines: null,
-                                    textAlign: TextAlign.left,
-                                    style:
-                                        AppStyle.txtSFProTextMedium12.copyWith(
-                                      letterSpacing: getHorizontalSize(
-                                        0.06,
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                          Container(
-                            padding: getPadding(
-                              left: 16,
-                              top: 14,
-                              right: 16,
-                              bottom: 14,
-                            ),
-                            decoration:
-                                AppDecoration.outlineOrangeA200.copyWith(
-                              borderRadius: BorderRadiusStyle.circleBorder16,
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: getPadding(
-                                    top: 1,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      CustomImageView(
-                                        svgPath: ImageConstant.imgMailGray500,
-                                        color: ColorConstant.orangeA200,
-                                        height: getSize(
-                                          32,
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.pushNamed(context, AppRoutes.projectsOneScreen);
+                            },
+                            child: Container(
+                              padding: getPadding(
+                                left: 16,
+                                top: 14,
+                                right: 16,
+                                bottom: 14,
+                              ),
+                              decoration:
+                                  AppDecoration.outlineOrangeA200.copyWith(
+                                borderRadius: BorderRadiusStyle.circleBorder16,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: getPadding(
+                                      top: 1,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        CustomImageView(
+                                          svgPath: ImageConstant.imgMailGray500,
+                                          color: ColorConstant.orangeA200,
+                                          height: getSize(
+                                            32,
+                                          ),
+                                          width: getSize(
+                                            32,
+                                          ),
                                         ),
-                                        width: getSize(
-                                          32,
+                                        CustomImageView(
+                                          svgPath: ImageConstant.imgArrowright,
+                                          height: getSize(
+                                            24,
+                                          ),
+                                          width: getSize(
+                                            24,
+                                          ),
+                                          margin: getMargin(
+                                            left: 80,
+                                            top: 4,
+                                            bottom: 4,
+                                          ),
                                         ),
-                                      ),
-                                      CustomImageView(
-                                        svgPath: ImageConstant.imgArrowright,
-                                        height: getSize(
-                                          24,
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: getPadding(
+                                      top: 12,
+                                    ),
+                                    child: Text(
+                                      "Report",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: AppStyle.txtSFProTextBold16,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: getPadding(
+                                      top: 10,
+                                    ),
+                                    child: Text(
+                                      "7",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: AppStyle.txtInterSemiBold24,
+                                    ),
+                                  ),
+                                  Container(
+                                    width: getHorizontalSize(
+                                      113,
+                                    ),
+                                    margin: getMargin(
+                                      top: 11,
+                                    ),
+                                    child: Text(
+                                      "You have 7 new report.",
+                                      maxLines: null,
+                                      textAlign: TextAlign.left,
+                                      style:
+                                          AppStyle.txtSFProTextMedium12.copyWith(
+                                        letterSpacing: getHorizontalSize(
+                                          0.06,
                                         ),
-                                        width: getSize(
-                                          24,
-                                        ),
-                                        margin: getMargin(
-                                          left: 80,
-                                          top: 4,
-                                          bottom: 4,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: getPadding(
-                                    top: 12,
-                                  ),
-                                  child: Text(
-                                    "Report",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.left,
-                                    style: AppStyle.txtSFProTextBold16,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: getPadding(
-                                    top: 10,
-                                  ),
-                                  child: Text(
-                                    "7",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.left,
-                                    style: AppStyle.txtInterSemiBold24,
-                                  ),
-                                ),
-                                Container(
-                                  width: getHorizontalSize(
-                                    113,
-                                  ),
-                                  margin: getMargin(
-                                    top: 11,
-                                  ),
-                                  child: Text(
-                                    "You have 7 new report.",
-                                    maxLines: null,
-                                    textAlign: TextAlign.left,
-                                    style:
-                                        AppStyle.txtSFProTextMedium12.copyWith(
-                                      letterSpacing: getHorizontalSize(
-                                        0.06,
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                          Container(
-                            padding: getPadding(
-                              left: 16,
-                              top: 14,
-                              right: 16,
-                              bottom: 14,
-                            ),
-                            decoration:
-                                AppDecoration.outlineOrangeA200.copyWith(
-                              borderRadius: BorderRadiusStyle.circleBorder16,
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: getPadding(
-                                    top: 1,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      CustomImageView(
-                                        svgPath:
-                                            ImageConstant.imgMailGray50024x24,
-                                        color: ColorConstant.orangeA200,
-                                        height: getSize(
-                                          32,
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.pushNamed(context, AppRoutes.messagesFivePage);
+                            },
+                            child: Container(
+                              padding: getPadding(
+                                left: 16,
+                                top: 14,
+                                right: 16,
+                                bottom: 14,
+                              ),
+                              decoration:
+                                  AppDecoration.outlineOrangeA200.copyWith(
+                                borderRadius: BorderRadiusStyle.circleBorder16,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: getPadding(
+                                      top: 1,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        CustomImageView(
+                                          svgPath:
+                                              ImageConstant.imgMailGray50024x24,
+                                          color: ColorConstant.orangeA200,
+                                          height: getSize(
+                                            32,
+                                          ),
+                                          width: getSize(
+                                            32,
+                                          ),
                                         ),
-                                        width: getSize(
-                                          32,
+                                        CustomImageView(
+                                          svgPath: ImageConstant.imgArrowright,
+                                          height: getSize(
+                                            24,
+                                          ),
+                                          width: getSize(
+                                            24,
+                                          ),
+                                          margin: getMargin(
+                                            left: 80,
+                                            top: 4,
+                                            bottom: 4,
+                                          ),
                                         ),
-                                      ),
-                                      CustomImageView(
-                                        svgPath: ImageConstant.imgArrowright,
-                                        height: getSize(
-                                          24,
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: getPadding(
+                                      top: 12,
+                                    ),
+                                    child: Text(
+                                      "Messages",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: AppStyle.txtSFProTextBold16,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: getPadding(
+                                      top: 10,
+                                    ),
+                                    child: Text(
+                                      "4",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: AppStyle.txtInterSemiBold24,
+                                    ),
+                                  ),
+                                  Container(
+                                    width: getHorizontalSize(
+                                      113,
+                                    ),
+                                    margin: getMargin(
+                                      top: 11,
+                                    ),
+                                    child: Text(
+                                      "You have 4 new messages.",
+                                      maxLines: null,
+                                      textAlign: TextAlign.left,
+                                      style:
+                                          AppStyle.txtSFProTextMedium12.copyWith(
+                                        letterSpacing: getHorizontalSize(
+                                          0.06,
                                         ),
-                                        width: getSize(
-                                          24,
-                                        ),
-                                        margin: getMargin(
-                                          left: 80,
-                                          top: 4,
-                                          bottom: 4,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: getPadding(
-                                    top: 12,
-                                  ),
-                                  child: Text(
-                                    "Messages",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.left,
-                                    style: AppStyle.txtSFProTextBold16,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: getPadding(
-                                    top: 10,
-                                  ),
-                                  child: Text(
-                                    "4",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.left,
-                                    style: AppStyle.txtInterSemiBold24,
-                                  ),
-                                ),
-                                Container(
-                                  width: getHorizontalSize(
-                                    113,
-                                  ),
-                                  margin: getMargin(
-                                    top: 11,
-                                  ),
-                                  child: Text(
-                                    "You have 4 new messages.",
-                                    maxLines: null,
-                                    textAlign: TextAlign.left,
-                                    style:
-                                        AppStyle.txtSFProTextMedium12.copyWith(
-                                      letterSpacing: getHorizontalSize(
-                                        0.06,
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:svp_admin_pm/models/main_user.dart';
-import 'package:svp_admin_pm/presentation/auth/signin/signin.dart';
+import 'package:svp_admin_pm/presentation/arena/state/arena_provider.dart';
 import 'package:svp_admin_pm/presentation/auth/signin/state/auth_provider.dart';
 import 'package:svp_admin_pm/presentation/main_dashboard/user_dashboard.dart';
+import 'package:svp_admin_pm/presentation/onboarding_page/onboarding_screen.dart';
 import 'package:svp_admin_pm/presentation/profile_screen/state/profile_provider.dart';
 import 'package:svp_admin_pm/presentation/splash.dart';
 import 'package:svp_admin_pm/presentation/tasks_list_tab_container_page/state/task_provider.dart';
 import 'package:svp_admin_pm/routes/app_routes.dart';
 import 'package:svp_admin_pm/utils/app_local_storage.dart';
-import 'package:svp_admin_pm/utils/flushbar_mixin.dart';
+
+import 'models/main_user.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +22,7 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget with FlushBarMixin {
+class MyApp extends StatelessWidget {
   final AppLocalStorage storage = AppLocalStorage();
   // @override
   // Widget build(BuildContext context) {
@@ -36,40 +38,48 @@ class MyApp extends StatelessWidget with FlushBarMixin {
   // }
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => ProfileProvider()),
-        ChangeNotifierProvider(create: (_) => TasksProvider()),
-      ],
-      child: MaterialApp(
-        home: FutureBuilder(
-          future: fetchAuthData(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data["token"] != null) {
-                if (checkAuthenticated(snapshot.data)) {
-                  return MainDashboardScreen();
+    return ScreenUtilInit(
+      designSize: const Size(1080, 1920),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => AuthProvider()),
+            ChangeNotifierProvider(create: (_) => ProfileProvider()),
+            ChangeNotifierProvider(create: (_) => TasksProvider()),
+            ChangeNotifierProvider(create: (_) => ArenaProvider()),
+          ],
+          child: MaterialApp(
+            home: FutureBuilder(
+              future: fetchAuthData(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data["token"] != null) {
+                    if (checkAuthenticated(snapshot.data)) {
+                      return MainDashboardScreen();
+                    }
+                  }
+                  return OnboardingScreen();
+                } else {
+                  return FutureBuilder(
+                    future: Future.delayed(Duration(seconds: 7)),
+                    builder: (context, snapshot) {
+                      return SplashScreen();
+                    },
+                  );
                 }
-              }
-              return signin();
-            } else {
-              return FutureBuilder(
-                future: Future.delayed(Duration(seconds: 10)),
-                builder: (context, snapshot) {
-                  return SplashScreen();
-                },
-              );
-            }
-          },
-        ),
-        title: "Alumates",
-        theme: ThemeData(
-          visualDensity: VisualDensity.standard,
-        ),
-        routes: AppRoutes.routes,
-        debugShowCheckedModeBanner: false,
-      ),
+              },
+            ),
+            title: "SVP",
+            theme: ThemeData(
+              visualDensity: VisualDensity.standard,
+            ),
+            routes: AppRoutes.routes,
+            debugShowCheckedModeBanner: false,
+          ),
+        );
+      },
     );
   }
 

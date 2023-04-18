@@ -13,193 +13,152 @@ class MessagesFivePage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.gray200,
-        appBar: CustomAppBar(
-          height: getVerticalSize(
-            100,
-          ),
-          leadingWidth: 80,
-          leading: AppbarImage(
-            height: getVerticalSize(
-              32,
-            ),
-            width: getHorizontalSize(
-              64,
-            ),
-            imagePath: ImageConstant.imgSvppnglogo1,
-            margin: getMargin(
-              left: 16,
-              top: 56,
-              bottom: 12,
-            ),
-          ),
-          actions: [
-            AppbarImage(
-              height: getSize(
-                24,
+        body: Column(
+          children: [
+            Container(
+              height: getVerticalSize(
+                70,
               ),
-              width: getSize(
-                24,
-              ),
-              svgPath: ImageConstant.imgSearch,
-              margin: getMargin(
-                left: 16,
-                top: 60,
-                right: 12,
-                bottom: 4,
+              width: double.maxFinite,
+              child: Container(
+                width: double.maxFinite,
+                padding: getPadding(
+                  all: 16,
+                ),
+                decoration: AppDecoration.outlineGray300,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            margin: getMargin(
+                              top: 10,
+                            ),
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: ColorConstant.orangeA200,
+                            ),
+                          ),
+                        ),
+                        Spacer(),
+                        CustomImageView(
+                          svgPath: ImageConstant.imgOverflowmenu,
+                          height: getSize(
+                            24,
+                          ),
+                          width: getSize(
+                            24,
+                          ),
+                          margin: getMargin(
+                            top: 10,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(
-              height: getSize(
-                24,
+              width: double.maxFinite,
+              padding: getPadding(
+                left: 16,
+                top: 23,
+                right: 16,
+                bottom: 23,
               ),
-              width: getSize(
-                24,
-              ),
-              margin: getMargin(
-                left: 32,
-                top: 60,
-                right: 12,
-                bottom: 4,
-              ),
-              child: Stack(
-                alignment: Alignment.topRight,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  AppbarImage(
-                    height: getSize(
-                      24,
+
+                  Padding(
+                    padding: getPadding(
+                      right: 1,
                     ),
-                    width: getSize(
-                      24,
-                    ),
-                    svgPath: ImageConstant.imgNotification,
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      height: getSize(
-                        8,
-                      ),
-                      width: getSize(
-                        8,
-                      ),
-                      margin: getMargin(
-                        left: 16,
-                        bottom: 16,
-                      ),
-                      decoration: BoxDecoration(
-                        color: ColorConstant.red500,
-                        borderRadius: BorderRadius.circular(
-                          getHorizontalSize(
-                            4,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "MESSAGES",
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.left,
+                              style: AppStyle.txtSFProTextBold16,
+                            ),
+                            Padding(
+                              padding: getPadding(
+                                top: 19,
+                              ),
+                              child: Text(
+                                "Today",
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.left,
+                                style: AppStyle.txtSFProTextSemibold14OrangeA200,
+                              ),
+                            ),
+                          ],
+                        ),
+                        CustomButton(
+                          height: getVerticalSize(
+                            37,
+                          ),
+                          width: getHorizontalSize(
+                            126,
+                          ),
+                          text: "New Chat",
+                          margin: getMargin(
+                            top: 11,
+                            bottom: 8,
+                          ),
+                          variant: ButtonVariant.FillOrangeA200,
+                          padding: ButtonPadding.PaddingT9,
+                          fontStyle: ButtonFontStyle.SFProTextBold14,
+                          suffixWidget: Container(
+                            margin: getMargin(
+                              left: 6,
+                            ),
+                            child: CustomImageView(
+                              svgPath: ImageConstant.imgEdit,
+                            ),
                           ),
                         ),
-                      ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: getPadding(
+                      top: 26,
+                    ),
+                    child: ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      separatorBuilder: (context, index) {
+                        return SizedBox(
+                          height: getVerticalSize(
+                            16,
+                          ),
+                        );
+                      },
+                      itemCount: 2,
+                      itemBuilder: (context, index) {
+                        return MessagesFiveItemWidget();
+                      },
                     ),
                   ),
                 ],
               ),
             ),
-            AppbarCircleimage(
-              imagePath: ImageConstant.imgEllipse12,
-              margin: getMargin(
-                left: 32,
-                top: 56,
-                right: 28,
-              ),
-            ),
           ],
-          styleType: Style.bgOutlineGray300,
-        ),
-        body: Container(
-          width: double.maxFinite,
-          padding: getPadding(
-            left: 16,
-            top: 23,
-            right: 16,
-            bottom: 23,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: getPadding(
-                  right: 1,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "MESSAGES",
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
-                          style: AppStyle.txtSFProTextBold16,
-                        ),
-                        Padding(
-                          padding: getPadding(
-                            top: 19,
-                          ),
-                          child: Text(
-                            "Today",
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
-                            style: AppStyle.txtSFProTextSemibold14OrangeA200,
-                          ),
-                        ),
-                      ],
-                    ),
-                    CustomButton(
-                      height: getVerticalSize(
-                        37,
-                      ),
-                      width: getHorizontalSize(
-                        126,
-                      ),
-                      text: "New Chat",
-                      margin: getMargin(
-                        top: 11,
-                        bottom: 8,
-                      ),
-                      variant: ButtonVariant.FillOrangeA200,
-                      padding: ButtonPadding.PaddingT9,
-                      fontStyle: ButtonFontStyle.SFProTextBold14,
-                      suffixWidget: Container(
-                        margin: getMargin(
-                          left: 6,
-                        ),
-                        child: CustomImageView(
-                          svgPath: ImageConstant.imgEdit,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: getPadding(
-                  top: 26,
-                ),
-                child: ListView.separated(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  separatorBuilder: (context, index) {
-                    return SizedBox(
-                      height: getVerticalSize(
-                        16,
-                      ),
-                    );
-                  },
-                  itemCount: 2,
-                  itemBuilder: (context, index) {
-                    return MessagesFiveItemWidget();
-                  },
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );

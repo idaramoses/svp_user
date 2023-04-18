@@ -91,9 +91,9 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
     authProvider.userInfo = _user;
     authProvider.token = token;
   }
+
   Future<bool> _willPopCallback() {
-    Future.delayed(
-        const Duration(milliseconds: 1000), () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       if (Platform.isIOS) {
         try {
           exit(0);
@@ -103,15 +103,14 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
         }
       } else {
         try {
-          SystemNavigator
-              .pop(); // sometimes it cant exit app
+          SystemNavigator.pop(); // sometimes it cant exit app
         } catch (e) {
-          exit(
-              0); // so i am giving crash to app ... sad :(
+          exit(0); // so i am giving crash to app ... sad :(
         }
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -174,10 +173,10 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                           context, AppRoutes.notificationsOneScreen);
                     },
                     height: getSize(
-                      24,
+                      30,
                     ),
                     width: getSize(
-                      24,
+                      50,
                     ),
                     svgPath: ImageConstant.imgNotification,
                   ),

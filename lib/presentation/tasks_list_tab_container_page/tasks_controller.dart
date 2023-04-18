@@ -14,21 +14,21 @@ class TasksController with FlushBarMixin {
   TasksController({
     @required this.context,
   });
-  Future getPosts() async {
-    try {
-      Map<String, dynamic> response = await _tasksService.getPosts();
-      if (response["status"] == "success") {
-        await storage.store("posts", response["body"]["data"]["data"]);
-        await storage.store(
-            "next_page_url", response["body"]["data"]["next_page_url"]);
-        context.read<TasksProvider>().Taskss = response["body"]["data"]["data"];
-      } else {
-        context.read<TasksProvider>().Taskss = [];
-        print("couldn't get post");
-      }
-    } catch (e) {
-      context.read<TasksProvider>().Taskss = [];
-      print(e);
-    }
-  }
+  // Future getPosts() async {
+  //   try {
+  //     Map<String, dynamic> response = await _tasksService.getPosts();
+  //     if (response["status"] == "success") {
+  //       await storage.store("posts", response["body"]["data"]["data"]);
+  //       await storage.store(
+  //           "next_page_url", response["body"]["data"]["next_page_url"]);
+  //       context.read<TasksProvider>().Taskss = response["body"]["data"]["data"];
+  //     } else {
+  //       context.read<TasksProvider>().Taskss = [];
+  //       print("couldn't get post");
+  //     }
+  //   } catch (e) {
+  //     context.read<TasksProvider>().Taskss = [];
+  //     print(e);
+  //   }
+  // }
 }

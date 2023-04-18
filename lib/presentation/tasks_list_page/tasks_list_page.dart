@@ -26,7 +26,7 @@ class _TasksListPageState extends State<TasksListPage> with FlushBarMixin {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     if (!isInit) {
-      await TasksController(context: context).getPosts();
+      // await TasksController(context: context).getPosts();
       setState(() {
         isInit = true;
       });
