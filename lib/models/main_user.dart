@@ -2,7 +2,7 @@ class User {
   dynamic id;
   dynamic createdAt;
   dynamic updatedAt;
-  dynamic userId;
+  dynamic role;
   dynamic firstName;
   dynamic lastName;
   dynamic avatar;
@@ -14,7 +14,7 @@ class User {
       {this.id,
       this.createdAt,
       this.updatedAt,
-      this.userId,
+      this.role,
       this.name,
       this.firstName,
       this.lastName,
@@ -23,11 +23,11 @@ class User {
       this.token});
 
   User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    userId = json['_id'];
-    name = json["name"];
+    role = json['role'];
+    name = json["firstname"]+' '+ json['lastname'];
     firstName = json['firstname'];
     lastName = json['lastname'];
     avatar = json['avatar'];
@@ -37,11 +37,11 @@ class User {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
+    data['_id'] = this.id;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['name'] = this.name;
-    data['_id'] = this.userId;
+    data['firstname'] = this.name;
+    data['role'] = this.role;
     data['firstname'] = this.firstName;
     data['lastname'] = this.lastName;
     data['avatar'] = this.avatar;

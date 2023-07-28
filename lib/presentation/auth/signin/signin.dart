@@ -24,25 +24,26 @@ class _signinState extends State<signin> {
   bool ispasswordValid = false;
 
   bool issec = true;
+
   Future<bool> _willPopCallback() {
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    Future.delayed(
+        const Duration(milliseconds: 1000), () {
       if (Platform.isIOS) {
         try {
           exit(0);
         } catch (e) {
-          SystemNavigator
-              .pop(); // for IOS, not true this, you can make comment this :)
+          SystemNavigator.pop(); // for IOS, not true this, you can make comment this :)
         }
       } else {
         try {
           SystemNavigator.pop(); // sometimes it cant exit app
         } catch (e) {
-          exit(0); // so i am giving crash to app ... sad :(
+          exit(
+              0); // so i am giving crash to app ... sad :(
         }
       }
     });
   }
-
   @override
   Widget build(BuildContext context) {
     Widget emailTextField = Card(
@@ -71,7 +72,6 @@ class _signinState extends State<signin> {
             cursorColor: ColorConstant.orangeA200,
             decoration: InputDecoration(
               labelText: "Enter your email",
-              hintText: 'testuser@saharaviewpoint.com',
               labelStyle: TextStyle(color: ColorConstant.black900),
               suffixIcon: Padding(
                   padding: const EdgeInsetsDirectional.only(start: 30),
@@ -115,7 +115,6 @@ class _signinState extends State<signin> {
             cursorColor: ColorConstant.orangeA200,
             decoration: InputDecoration(
                 labelText: "Password",
-                hintText: 'password',
                 labelStyle: TextStyle(color: ColorConstant.black900),
                 suffixIcon: Container(
                   margin: getMargin(
@@ -166,7 +165,6 @@ class _signinState extends State<signin> {
             obscureText: issec ? true : false,
           ),
         ));
-
     return Scaffold(
       backgroundColor: ColorConstant.gray200,
       resizeToAvoidBottomInset: false,
@@ -174,6 +172,7 @@ class _signinState extends State<signin> {
         key: _formKey,
         child: Container(
           width: double.maxFinite,
+          height: MediaQuery.of(context).size.height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -263,7 +262,8 @@ class _signinState extends State<signin> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomImageView(
-                                svgPath: ImageConstant.imgComputerGray50024x24,
+                                svgPath:
+                                    ImageConstant.imgComputerGray50024x24,
                                 height: getSize(
                                   24,
                                 ),
@@ -294,8 +294,8 @@ class _signinState extends State<signin> {
                                   "Forgot Password?",
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
-                                  style:
-                                      AppStyle.txtSFProTextRegular14OrangeA200,
+                                  style: AppStyle
+                                      .txtSFProTextRegular14OrangeA200,
                                 ),
                               ),
                             ],

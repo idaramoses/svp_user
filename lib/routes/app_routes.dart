@@ -1,41 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:svp_admin_pm/presentation/dashboard_container_screen/dashboard_container_screen.dart';
-import 'package:svp_admin_pm/presentation/dashboard_one_screen/dashboard_one_screen.dart';
-import 'package:svp_admin_pm/presentation/messages_five_page/messages_five_page.dart';
-import 'package:svp_admin_pm/presentation/messages_four_screen/messages_four_screen.dart';
-import 'package:svp_admin_pm/presentation/messages_one_screen/messages_one_screen.dart';
 import 'package:svp_admin_pm/presentation/messages_screen/messages_screen.dart';
-import 'package:svp_admin_pm/presentation/messages_three_screen/messages_three_screen.dart';
-import 'package:svp_admin_pm/presentation/messages_two_screen/messages_two_screen.dart';
 import 'package:svp_admin_pm/presentation/new_project_form_one_screen/new_project_form_one_screen.dart';
 import 'package:svp_admin_pm/presentation/new_project_form_screen/new_project_form_screen.dart';
-import 'package:svp_admin_pm/presentation/notifications_one_screen/notifications_one_screen.dart';
-import 'package:svp_admin_pm/presentation/notifications_screen/notifications_screen.dart';
-import 'package:svp_admin_pm/presentation/projects_grid_one_screen/projects_grid_one_screen.dart';
-import 'package:svp_admin_pm/presentation/projects_grid_screen/projects_grid_screen.dart';
-import 'package:svp_admin_pm/presentation/projects_list_screen/projects_list_screen.dart';
-import 'package:svp_admin_pm/presentation/projects_one_screen/projects_one_screen.dart';
-import 'package:svp_admin_pm/presentation/projects_screen/projects_screen.dart';
-import 'package:svp_admin_pm/presentation/reports_grid_one_screen/reports_grid_one_screen.dart';
-import 'package:svp_admin_pm/presentation/reports_grid_screen/reports_grid_screen.dart';
-import 'package:svp_admin_pm/presentation/reports_list_one_screen/reports_list_one_screen.dart';
-import 'package:svp_admin_pm/presentation/tasks_one_screen/tasks_one_screen.dart';
-import 'package:svp_admin_pm/presentation/tasks_screen/tasks_screen.dart';
-import 'package:svp_admin_pm/presentation/upload_reports_one_screen/upload_reports_one_screen.dart';
-import 'package:svp_admin_pm/presentation/upload_reports_screen/upload_reports_screen.dart';
-
+import 'package:svp_admin_pm/presentation/reports_page/upload_reports_screen.dart';
 import '../presentation/auth/signin/signin.dart';
 import '../presentation/auth/signup/signup.dart';
 import '../presentation/main_dashboard/user_dashboard.dart';
+import '../presentation/messages_screen/Messages_screen.dart';
+import '../presentation/notifications_one_screen/Notification_screen.dart';
 import '../presentation/onboarding_page/onboarding_screen.dart';
 import '../presentation/onboarding_page/waitlist/waitlist.dart';
 import '../presentation/onboarding_page/welcome.dart';
 import '../presentation/profile_screen/profile.dart';
+import '../presentation/projects_main/project_grid_screen.dart';
+import '../presentation/projects_main/projects_details_screen/projects_details_screen.dart';
+import '../presentation/projects_main/projects_main.dart';
+import '../presentation/reports_page/reports_grid_one_screen/reports_grid_one_screen.dart';
+import '../presentation/reports_page/reports_page.dart';
 
 class AppRoutes {
   static const String uploadReportsScreen = '/upload_reports_screen';
 
-  static const String projectsOneScreen = '/projects_one_screen';
+  static const String projectdetails = '/projects_one_screen';
 
   static const String tasksScreen = '/tasks_screen';
 
@@ -47,10 +33,9 @@ class AppRoutes {
 
   static const String tasksListPage = '/tasks_list_page';
 
-  static const String tasksListTabContainerPage =
-      '/tasks_list_tab_container_page';
+  static const String tasksListTabContainerPage = '/tasks_page';
 
-  static const String reportsListPage = '/reports_list_page';
+  static const String reportsListPage = '/reports_page';
 
   static const String maindashboardOneScreen = '/maindashboardOneScreen';
 
@@ -62,7 +47,7 @@ class AppRoutes {
 
   static const String reportsGridOneScreen = '/reports_grid_one_screen';
 
-  static const String notificationsScreen = '/notifications_screen';
+  static const String notificationsScreen = '/profile_screen';
 
   static const String projectsGridScreen = '/projects_grid_screen';
 
@@ -122,37 +107,24 @@ class AppRoutes {
 
   static const String waitlistScreen = '/waitlist_screen';
 
+  // static const String messageFiveScreen = '/message_five_screen';
+
   static Map<String, WidgetBuilder> routes = {
     welcomeScreen: (context) => WelcomeScreen(),
+    notificationsOneScreen: (context) =>  NotificationsOneScreen(),
     waitlistScreen: (context) => Waitlist(),
     onboardScreen: (context) => OnboardingScreen(),
     signupScreen: (context) => signup(),
     signinScreen: (context) => signin(),
     profileScreen: (context) => Profile_Screen(),
     uploadReportsScreen: (context) => UploadReportsScreen(),
-    projectsOneScreen: (context) => ProjectsOneScreen(),
-    tasksScreen: (context) => TasksScreen(),
-    dashboardContainerScreen: (context) => DashboardContainerScreen(),
-    messagesScreen: (context) => MessagesScreen(),
-    messagesOneScreen: (context) => MessagesOneScreen(),
-    reportsGridOneScreen: (context) => ReportsGridOneScreen(),
-    notificationsScreen: (context) => NotificationsScreen(),
-    projectsGridScreen: (context) => ProjectsGridScreen(),
-    uploadReportsOneScreen: (context) => UploadReportsOneScreen(),
-    projectsScreen: (context) => ProjectsScreen(),
-    tasksOneScreen: (context) => TasksOneScreen(),
-    dashboardOneScreen: (context) => DashboardOneScreen(),
+    projectdetails: (context) => ProjectsDetailsScreen(),
+    reportsGridOneScreen: (context) => ReportGridScreen(),
+    projectsGridScreen: (context) => ProjectGridScreen(),
+    projectsScreen: (context) => ProjectsMainPage(),
     maindashboardOneScreen: (context) => MainDashboardScreen(),
     newProjectFormOneScreen: (context) => NewProjectFormOneScreen(),
-    projectsListScreen: (context) => ProjectsListScreen(),
-    reportsListOneScreen: (context) => ReportsListOneScreen(),
-    messagesTwoScreen: (context) => MessagesTwoScreen(),
-    messagesFourScreen: (context) => MessagesFourScreen(),
-    messagesThreeScreen: (context) => MessagesThreeScreen(),
-    messagesFivePage: (context) => MessagesFivePage(),
+    reportsListOneScreen: (context) => ReportPage(),
     newProjectFormScreen: (context) => NewProjectFormScreen(),
-    reportsGridScreen: (context) => ReportsGridScreen(),
-    notificationsOneScreen: (context) => NotificationsOneScreen(),
-    projectsGridOneScreen: (context) => ProjectsGridOneScreen(),
   };
 }

@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "946310710861",
+    "project_id": "saharaviewpoint-8eda3",
+    "storage_bucket": "saharaviewpoint-8eda3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946310710861:android:ee515a45b8d1fbae4abe04",
+        "android_client_info": {
+          "package_name": "com.maradi.svpadminpm.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946310710861-ck1liuo3lekeo1ojo41dke3rdf9517h8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABzZnvk2kgqWtuNUJtE9WSwPTZwezxWvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946310710861-ck1liuo3lekeo1ojo41dke3rdf9517h8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946310710861:android:e964b0526e275f414abe04",
+        "android_client_info": {
+          "package_name": "com.maradi.svpusers.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946310710861-ck1liuo3lekeo1ojo41dke3rdf9517h8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABzZnvk2kgqWtuNUJtE9WSwPTZwezxWvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946310710861-ck1liuo3lekeo1ojo41dke3rdf9517h8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

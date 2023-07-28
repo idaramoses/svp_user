@@ -10,7 +10,7 @@ class Dashboard1ItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, AppRoutes.projectsOneScreen);
+        Navigator.pushNamed(context, AppRoutes.projectdetails);
       },
       child: Container(
         width: double.maxFinite,
@@ -225,7 +225,7 @@ class Dashboard1ItemWidgecompete extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, AppRoutes.projectsOneScreen);
+        Navigator.pushNamed(context, AppRoutes.projectdetails);
       },
       child: Container(
         width: double.maxFinite,
@@ -440,7 +440,7 @@ class Dashboard1ItemWidgepending extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, AppRoutes.projectsOneScreen);
+        Navigator.pushNamed(context, AppRoutes.projectdetails);
       },
       child: Container(
         width: double.maxFinite,

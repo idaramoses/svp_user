@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:svp_admin_pm/presentation/dashboard_page/dashboard_page.dart';
-import 'package:svp_admin_pm/presentation/messages_two_screen/messages_two_screen.dart';
-import 'package:svp_admin_pm/presentation/projects_list_one_page/projects_list_one_page.dart';
-import 'package:svp_admin_pm/presentation/reports_list_page/reports_list_page.dart';
 
 import '../../core/utils/color_constant.dart';
 import '../../core/utils/image_constant.dart';
@@ -20,25 +17,31 @@ import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_bottom_bar.dart';
 import '../../widgets/custom_image_view.dart';
 import '../auth/signin/state/auth_provider.dart';
-import '../tasks_list_tab_container_page/tasks_list_tab_container_page.dart';
+import '../messages_screen/Messages_screen.dart';
+import '../messages_screen/state/messages_controller.dart';
+import '../projects_main/projects_main.dart';
+import '../reports_page/reports_page.dart';
+import '../tasks_page_main/tasks_page.dart';
 
 class MainDashboardScreen extends StatefulWidget {
-  const MainDashboardScreen({Key key}) : super(key: key);
+  int id;
+  MainDashboardScreen({Key key, this.id,}) : super(key: key);
 
   @override
-  _MainDashboardScreenState createState() => _MainDashboardScreenState();
+  _MainDashboardScreenState createState() => _MainDashboardScreenState(id:id);
 }
 
 class _MainDashboardScreenState extends State<MainDashboardScreen> {
-  int pageIndex = 0;
+  int id;
+  var  pageIndex = 0;
   bool isInit = false;
-
+  _MainDashboardScreenState({this.id,});
   final pages = [
     DashboardPage(),
-    ProjectsListOnePage(),
-    TasksListTabContainerPage(),
-    ReportsListPage(),
-    MessagesTwoScreen()
+    ProjectsMainPage(),
+    TasksPage(),
+    ReportPage(),
+    MessagesScreen()
   ];
   List<BottomMenuModel> bottomMenuList = [
     BottomMenuModel(
@@ -68,7 +71,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
     )
   ];
   @override
-  void didChangeDependencies() {
+  Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     if (!isInit) {
       loadUserData(context);
@@ -80,14 +83,12 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
 
   AppLocalStorage storage = AppLocalStorage();
 
+
   loadUserData(context) async {
     String token = await AppLocalStorage().fetch("token");
     Map<String, dynamic> _user = await AppLocalStorage().fetch("user");
-
     AuthProvider authProvider =
         Provider.of<AuthProvider>(context, listen: false);
-
-    /// load user data to state
     authProvider.userInfo = _user;
     authProvider.token = token;
   }
@@ -220,7 +221,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
           ],
           styleType: Style.bgOutlineGray300,
         ),
-        body: pages[pageIndex],
+        body: pages[id==0?pageIndex:id],
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             color: ColorConstant.gray200,
@@ -238,7 +239,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
             showSelectedLabels: false,
             showUnselectedLabels: false,
             elevation: 0,
-            currentIndex: pageIndex,
+            currentIndex: id==0?pageIndex:id,
             type: BottomNavigationBarType.fixed,
             items: List.generate(bottomMenuList.length, (index) {
               return BottomNavigationBarItem(
@@ -313,6 +314,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
             }),
             onTap: (index) {
               setState(() {
+                id = index;
                 pageIndex = index;
               });
             },

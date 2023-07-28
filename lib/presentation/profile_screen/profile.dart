@@ -113,7 +113,7 @@ class _Profile_ScreenState extends State<Profile_Screen> with FlushBarMixin {
                     top: 4,
                   ),
                   child: Text(
-                    value.userInfo.email ?? '...',
+                    '',
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.left,
                     style: AppStyle.txtSFProTextRegular14,

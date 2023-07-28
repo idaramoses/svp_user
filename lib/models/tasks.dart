@@ -1,80 +1,140 @@
 class Tasks {
-  int id;
+  String id;
+  String user_status;
   String name;
-  String content;
-  String photo;
-  String video;
-  String status;
-  String isPromoted;
-  String reposted;
-  String reposterName;
-  String repostId;
-  String repostHasPhoto;
-  int userId;
-  int categoryId;
-  int groupId;
-  int schoolId;
-  String createdAt;
-  String updatedAt;
+  String size;
+  String due;
+  bool star;
+  String date;
+  String projectName;
+  String projectUserID;
+  String projectID;
+  String assignFirstName;
+  String assignLastName;
+  String assignID;
+  String assignAvata;
+  String aprovalID;
+  List<TasksAttatment> attactment = [];
 
   Tasks(
       {this.id,
-      this.name,
-      this.content,
-      this.photo,
-      this.video,
-      this.status,
-      this.isPromoted,
-      this.reposted,
-      this.reposterName,
-      this.repostId,
-      this.repostHasPhoto,
-      this.userId,
-      this.categoryId,
-      this.groupId,
-      this.schoolId,
-      this.createdAt,
-      this.updatedAt});
+        this.user_status,
+        this.name,
+        this.size,
+        this.due,
+        this.date,
+        this.star,
+        this.projectName,
+        this.projectUserID,
+        this.projectID,
+        this.assignFirstName,
+        this.assignLastName,
+        this.assignID,
+        this.assignAvata,
+        this.attactment,
+        this.aprovalID,
+      });
+  factory Tasks.fromJson(Map<String, dynamic> json) => Tasks(
+    id: json["_id"],
+    name: json["name"],
+    user_status : json['status'],
+    size: json['size'],
+    due: json['due'],
+    date: json['date'],
+    projectName: json['project']['name'],
+    projectUserID: json['project']['user_id'],
+    projectID: json['project']['id'],
+    assignFirstName: json['assigned_to']['firstname'],
+    assignLastName: json['assigned_to']['lastname'],
+    assignID: json['assigned_to']['id'],
+    assignAvata: json['assigned_to']['avatar'],
+    star: json["star"],
+    aprovalID: json["approval_id"],
+    attactment : List.from(json['attachments']).map((e) => TasksAttatment.fromJson(e)).toList(),
+  );
 
-  Tasks.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    content = json['content'];
-    photo = json['photo'];
-    video = json['video'];
-    status = json['status'];
-    isPromoted = json['isPromoted'];
-    reposted = json['reposted'];
-    reposterName = json['reposterName'];
-    repostId = json['repostId'];
-    repostHasPhoto = json['repostHasPhoto'];
-    userId = json['user_id'];
-    categoryId = json['category_id'];
-    groupId = json['group_id'];
-    schoolId = json['school_id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "status ":user_status,
+    "name":name,
+    "size":size,
+    "due":due,
+    "date":date,
+    "star":star,
+    "projectName":projectName,
+    "projectUserID":projectUserID,
+    "projectID":projectID,
+    "assignFirstName":assignFirstName,
+    "assignLastName":assignLastName,
+    "assignID":assignID,
+    "assignAvata":assignAvata,
+    "approval_id":aprovalID,
+    'attachments' :attactment.map((e) => e.toJson()).toList(),
+  };
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['content'] = this.content;
-    data['photo'] = this.photo;
-    data['video'] = this.video;
-    data['status'] = this.status;
-    data['isPromoted'] = this.isPromoted;
-    data['reposted'] = this.reposted;
-    data['reposterName'] = this.reposterName;
-    data['repostId'] = this.repostId;
-    data['repostHasPhoto'] = this.repostHasPhoto;
-    data['user_id'] = this.userId;
-    data['category_id'] = this.categoryId;
-    data['group_id'] = this.groupId;
-    data['school_id'] = this.schoolId;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    return data;
-  }
+}
+
+class TasksAttatment {
+  TasksAttatment({
+    this.name,
+    this.size,
+    this.type,
+    this.date,
+
+  });
+
+  String name;
+  int size;
+  String type;
+  String date;
+
+
+  factory TasksAttatment.fromJson(Map<String, dynamic> json) => TasksAttatment(
+    name: json["name"],
+    // size: json["size"],
+    // type: json["type"],
+    // date: json["date"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "size": size,
+    "type": type,
+    "date": date,
+  };
+}
+
+class TasksActivities {
+  TasksActivities({
+    this.initiator,
+    this.action_type,
+    this.action,
+    this.date,
+    this.id,
+
+  });
+
+  String initiator;
+  String action_type;
+  String action;
+  String date;
+  String id;
+
+
+  factory TasksActivities.fromJson(Map<String, dynamic> json) => TasksActivities(
+    initiator: json["initiator"],
+    action_type: json["action_type"],
+    action: json["action"],
+    date: json["date"],
+    id: json["_id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "initiator": initiator,
+    "action_type": action_type,
+    "action": action,
+    "date": date,
+    "_id": id,
+  };
 }

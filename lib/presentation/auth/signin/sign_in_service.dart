@@ -23,7 +23,9 @@ class SignInService with Services {
     return {};
   }
 
-  Future<Map<String, dynamic>> userprofiles() async {
+
+
+  Future<Map<String, dynamic>> pmprofiles() async {
     try {
       final response = await apiGetRequests("user/profile");
       return response;

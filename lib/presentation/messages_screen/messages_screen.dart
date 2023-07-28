@@ -1,466 +1,383 @@
-import 'package:flutter/material.dart';
-import 'package:svp_admin_pm/core/app_export.dart';
-import 'package:svp_admin_pm/widgets/custom_button.dart';
-import 'package:svp_admin_pm/widgets/custom_icon_button.dart';
-import 'package:svp_admin_pm/widgets/custom_text_form_field.dart';
 
-class MessagesScreen extends StatelessWidget {
-  TextEditingController frame1686560218Controller = TextEditingController();
+import 'package:animated_horizontal_calendar/utils/color.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:pk_skeleton/pk_skeleton.dart';
+import 'package:provider/provider.dart';
+import 'package:svp_admin_pm/presentation/messages_screen/state/messages_controller.dart';
+import 'package:svp_admin_pm/presentation/messages_screen/state/messages_provider.dart';
+import '../../core/utils/color_constant.dart';
+import '../../core/utils/image_constant.dart';
+import '../../core/utils/size_utils.dart';
+import '../../models/messages.dart';
+import '../../models/notification.dart';
+import '../../theme/app_decoration.dart';
+import '../../theme/app_style.dart';
+import '../../utils/app_local_storage.dart';
+import '../../widgets/app_bar/appbar_circleimage_1.dart';
+import '../../widgets/custom_button.dart';
+import '../../widgets/custom_image_view.dart';
+import '../auth/signin/state/auth_provider.dart';
+import 'chat_details.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
+
+
+
+class MessagesScreen extends StatefulWidget {
+  @override
+  State<MessagesScreen> createState() => _MessagesScreenState();
+}
+
+class _MessagesScreenState extends State<MessagesScreen> {
+  AppLocalStorage storage = AppLocalStorage();
+  String selectedCategory;
+  String reportReason;
+  bool isClassmatesSelected = false;
+  bool isCategorySelected = false;
+  int currentIndex = 0;
+  final scrollController = ScrollController();
+  int selectedId;
+  int reportedPostId;
+  int currentPostId = 0;
+  List<String> categories = ["All"];
+
+  bool isLoading = false;
+  bool loadingMore = false;
+  bool isInit = false;
+  bool isFollowing = false;
+  bool radioValue1 = false;
+  bool radioValue2 = false;
+  bool isReporting = false;
+  bool isFirstTimeClassmatesTapped = false;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      selectedCategory = 'All';
+      isCategorySelected = true;
+    });
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (!isInit) {
+      await MessagesController(context: context).getPosts();
+
+      setState(() {
+        isInit = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: ColorConstant.gray200,
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          width: double.maxFinite,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
+    return Scaffold(
+      backgroundColor:  ColorConstant.gray200,
+      body: Consumer<MessagesProvider>(builder: (context, value, child) {
+        if (value.posts == null)
+          return loader();
+        else {
+          return Column(
             children: [
-              Container(
-                width: double.maxFinite,
-                child: Container(
-                  padding: getPadding(
-                    left: 15,
-                    top: 16,
-                    right: 15,
-                    bottom: 16,
-                  ),
-                  decoration: AppDecoration.outlineGray300,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: double.maxFinite,
-                        child: Container(
-                          width: getHorizontalSize(
-                            344,
-                          ),
-                          margin: getMargin(
-                            left: 1,
-                            bottom: 24,
-                          ),
-                          decoration: AppDecoration.outlineGray3004,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: getPadding(
-                                  right: 50,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "Project: ",
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.left,
-                                      style: AppStyle
-                                          .txtSFProTextSemibold14Gray800,
-                                    ),
-                                    Padding(
-                                      padding: getPadding(
-                                        left: 46,
-                                      ),
-                                      child: Text(
-                                        "Skyline Building Construction",
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.left,
-                                        style: AppStyle
-                                            .txtSFProTextSemibold14OrangeA200,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: getPadding(
-                                  top: 11,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: getPadding(
-                                        top: 6,
-                                        bottom: 6,
-                                      ),
-                                      child: Text(
-                                        "Status: ",
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.left,
-                                        style: AppStyle
-                                            .txtSFProTextSemibold14Gray800,
-                                      ),
-                                    ),
-                                    CustomButton(
-                                      height: getVerticalSize(
-                                        30,
-                                      ),
-                                      width: getHorizontalSize(
-                                        94,
-                                      ),
-                                      text: "In Progress",
-                                      margin: getMargin(
-                                        left: 49,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: getPadding(
-                                  top: 11,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: getPadding(
-                                        bottom: 1,
-                                      ),
-                                      child: Text(
-                                        "Due date: ",
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.left,
-                                        style: AppStyle
-                                            .txtSFProTextSemibold14Gray800,
-                                      ),
-                                    ),
-                                    CustomImageView(
-                                      svgPath: ImageConstant.imgCalendar,
-                                      height: getSize(
-                                        16,
-                                      ),
-                                      width: getSize(
-                                        16,
-                                      ),
-                                      margin: getMargin(
-                                        left: 33,
-                                        top: 1,
-                                        bottom: 1,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: getPadding(
-                                        left: 8,
-                                        top: 1,
-                                      ),
-                                      child: Text(
-                                        "18 Aug 2023",
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.left,
-                                        style: AppStyle
-                                            .txtSFProTextSemibold14Gray800,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: getPadding(
-                                  top: 10,
-                                  right: 19,
-                                  bottom: 6,
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: getPadding(
-                                        top: 1,
-                                        bottom: 52,
-                                      ),
-                                      child: Text(
-                                        "Description:",
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.left,
-                                        style: AppStyle
-                                            .txtSFProTextSemibold14Gray800,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        width: getHorizontalSize(
-                                          227,
-                                        ),
-                                        margin: getMargin(
-                                          left: 16,
-                                        ),
-                                        child: Text(
-                                          "Lorem ipsum dolor sit amet consectetur. Lectus le leo enim quis facilisis. Elit ut facilisi arcu nibh. Etia posuere posuere rhoncus nam. ",
-                                          maxLines: null,
-                                          textAlign: TextAlign.left,
-                                          style: AppStyle.txtSFProTextRegular14,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              CustomButton(
-                height: getVerticalSize(
-                  24,
-                ),
-                width: getHorizontalSize(
-                  96,
-                ),
-                text: "1st Feb, 2023",
-                margin: getMargin(
-                  top: 8,
-                ),
-                variant: ButtonVariant.OutlineGray100,
-                padding: ButtonPadding.PaddingAll4,
-                fontStyle: ButtonFontStyle.SFProTextMedium12Gray800,
-                alignment: Alignment.center,
-              ),
               Padding(
                 padding: getPadding(
                   left: 16,
-                  top: 46,
+                  right: 16,
+                  top: 10,
                 ),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomImageView(
-                      svgPath: ImageConstant.imgArrowrightGray400,
-                      height: getSize(
-                        24,
-                      ),
-                      width: getSize(
-                        24,
-                      ),
-                    ),
-                    Padding(
-                      padding: getPadding(
-                        left: 8,
-                        top: 4,
-                        bottom: 2,
-                      ),
-                      child: Text(
-                        "5 attached files from Anthony",
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                        style: AppStyle.txtSFProTextSemibold14Gray400,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: getPadding(
-                  left: 16,
-                  top: 8,
-                  right: 40,
-                ),
-                child: Row(
-                  children: [
-                    CustomImageView(
-                      imagePath: ImageConstant.imgEllipse1332x32,
-                      height: getSize(
-                        32,
-                      ),
-                      width: getSize(
-                        32,
-                      ),
-                      radius: BorderRadius.circular(
-                        getHorizontalSize(
-                          16,
-                        ),
-                      ),
-                      margin: getMargin(
-                        top: 99,
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        margin: getMargin(
-                          left: 8,
-                        ),
-                        padding: getPadding(
-                          left: 16,
-                          top: 6,
-                          right: 16,
-                          bottom: 6,
-                        ),
-                        decoration: AppDecoration.outlineGray1002.copyWith(
-                          borderRadius: BorderRadiusStyle.customBorderTL16,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: getHorizontalSize(
-                                225,
-                              ),
-                              margin: getMargin(
-                                right: 21,
-                              ),
-                              child: Text(
-                                "Lorem ipsum dolor sit amet consectetur. Lectus le leo enim quis facilisis. Elit ut facilisi arcu nibh. Etia posuere posuere rhoncus nam. ",
-                                maxLines: null,
-                                textAlign: TextAlign.left,
-                                style: AppStyle.txtSFProTextRegular16Gray800,
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: getPadding(
-                                  top: 4,
-                                  bottom: 1,
-                                ),
-                                child: Text(
-                                  "12:00",
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
-                                  style: AppStyle.txtSFProTextMedium12Gray500
-                                      .copyWith(
-                                    letterSpacing: getHorizontalSize(
-                                      0.06,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  width: getHorizontalSize(
-                    287,
-                  ),
-                  margin: getMargin(
-                    left: 72,
-                    top: 12,
-                    right: 16,
-                    bottom: 5,
-                  ),
-                  padding: getPadding(
-                    left: 16,
-                    top: 6,
-                    right: 16,
-                    bottom: 6,
-                  ),
-                  decoration: AppDecoration.fillOrangeA200.copyWith(
-                    borderRadius: BorderRadiusStyle.customBorderTL161,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: getHorizontalSize(
-                          243,
-                        ),
-                        margin: getMargin(
-                          right: 11,
-                        ),
-                        child: Text(
-                          "Lorem ipsum dolor sit amet consectetur. Lectus leo enim quis facilisis. Elit ut facilisi arcu nibh. E posuere posuere rhoncus nam. Molestie lorem o id sed quis eu ",
-                          maxLines: null,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "MESSAGES",
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.left,
-                          style: AppStyle.txtSFProTextRegular16WhiteA700,
+                          style: AppStyle.txtSFProTextBold16,
                         ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
+                        Padding(
                           padding: getPadding(
-                            top: 1,
-                            bottom: 1,
+                            top: 19,
                           ),
                           child: Text(
-                            "12:00",
+                            "Today",
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
-                            style:
-                                AppStyle.txtSFProTextMedium12Gray100.copyWith(
-                              letterSpacing: getHorizontalSize(
-                                0.06,
-                              ),
-                            ),
+                            style: AppStyle.txtSFProTextSemibold14OrangeA200,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
+              Expanded(
+                child: Padding(
+                    padding: getPadding(
+                      left: 16,
+                      right: 16,
+                      top: 5,
+                    ),child: NotificationBody(value)),
+              ),
             ],
+          );
+        }
+      }),
+    );
+  }
+
+  Widget NotificationBody(MessagesProvider value) {
+    if (value.posts == null) {
+      return loader();
+    } else if (value.posts.length == 0) {
+      emptyPostWidget("No Posts.");
+    } else {
+      List<Messages> categoryPost = [];
+      //List<Post> postsByClassmates = [];
+
+      //get user groups ids
+
+      //get post by category
+      value.posts.forEach((element) {
+        categoryPost.add(element);
+      });
+
+      if (categoryPost.length == 0) {
+        emptyPostWidget("No Message.");
+      } else
+        return listViewBuilder(categoryPost);
+    }
+    return emptyPostWidget("No Message.");
+  }
+
+
+  Widget listViewBuilder(List<Messages> postList) {
+    return NotificationListener(
+      onNotification: (ScrollEndNotification notification) {
+        if (notification is ScrollEndNotification &&
+            scrollController.position.extentAfter == 0) {
+          print('end');
+          loadMore();
+        }
+        return false;
+      },
+      child: ListView(
+        controller: scrollController,
+        children: <Widget>[
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              Messages post = postList[index];
+              return postCard(post);
+            },
+            itemCount: postList.length,
           ),
+          loadingMore
+              ? Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(child: CircularProgressIndicator()),
+          )
+              : SizedBox(),
+        ],
+      ),
+    );
+  }
+
+  Future loadMore() async {
+    if (!loadingMore) {
+      setState(() {
+        loadingMore = true;
+      });
+
+      setState(() {
+        loadingMore = false;
+      });
+    }
+  }
+
+
+  Widget postCard(Messages post) {
+    // String  date = post.date;
+    // DateTime parseDate =
+    // new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
+    // var inputDate = DateTime.parse(parseDate.toString());
+    // var outputFormat = DateFormat('MM/dd/yyyy');
+    // var outputDate = outputFormat.format(inputDate);
+ String userId =   Provider.of<AuthProvider>(context, listen: false).userInfo.id;
+ String username =   Provider.of<AuthProvider>(context, listen: false).userInfo.firstName;
+ String userphoto =   Provider.of<AuthProvider>(context, listen: false).userInfo.avatar;
+    return InkWell(
+      onTap: (){
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => Chat(
+              ptitle: post.projectname,
+              pstatues:post.projectadminstatus,
+              pdescription: post.projectdetails,
+              pdue: post.projectdue,
+              houseId: post.id,
+              title: post.title,
+              avatar:post.avatar
+            ),
+          ),
+        );
+      },
+      child:  Padding(
+        padding: getPadding(
+          left: 8,
+          right: 8,
+          bottom: 5,
         ),
-        bottomNavigationBar: Container(
-          width: double.maxFinite,
+        child: Container(
           padding: getPadding(
-            top: 8,
-            bottom: 8,
+            left: 5,
+            top: 5,
+            right: 5,
+            bottom: 10,
           ),
-          decoration: AppDecoration.outlineGray1003,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomIconButton(
-                height: 40,
-                width: 40,
-                margin: getMargin(
-                  bottom: 16,
-                ),
-                variant: IconButtonVariant.OutlineOrangeA200,
-                shape: IconButtonShape.CircleBorder20,
-                child: CustomImageView(
-                  svgPath: ImageConstant.imgTrashGray400,
-                ),
-              ),
-              CustomTextFormField(
-                width: getHorizontalSize(
-                  231,
-                ),
-                focusNode: FocusNode(),
-                controller: frame1686560218Controller,
-                hintText: "Type here...",
-                margin: getMargin(
-                  top: 2,
-                  bottom: 18,
-                ),
-                variant: TextFormFieldVariant.FillGray100,
-                fontStyle: TextFormFieldFontStyle.SFProTextRegular16Gray500,
-                textInputAction: TextInputAction.done,
-              ),
-              CustomIconButton(
-                height: 40,
-                width: 40,
-                margin: getMargin(
-                  bottom: 16,
-                ),
-                variant: IconButtonVariant.FillOrangeA200,
-                shape: IconButtonShape.CircleBorder20,
-                child: CustomImageView(
-                  svgPath: ImageConstant.imgSend,
-                ),
-              ),
-            ],
+          decoration: AppDecoration.outlineOrangeA2002,
+          child:
+          ListTile(
+            leading:   AppbarCircleimage1(
+              imagePath: ImageConstant.imgEllipse1340x40,
+            ),
+            title:  Text(
+            post.title,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.left,
+            style: AppStyle.txtSFProTextSemibold16,
           ),
+            subtitle:   groupLastMessage(post.id, Provider.of<AuthProvider>(context, listen: false).userInfo.id),
+            trailing:   Container(height: 20,width: 50, child: TimeWidget(post.id, Provider.of<AuthProvider>(context, listen: false).userInfo.id)), ),
         ),
       ),
+    );
+  }
+
+
+
+
+  Widget loader() {
+    return ListView.builder(
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return PKCardSkeleton();
+      },
+    );
+  }
+
+  Widget emptyPostWidget(String text) {
+    return Center(
+      child: Text(
+        text,
+        style:
+        TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget groupLastMessage(String groupId, String userId) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('messages')
+          .doc(groupId)
+          .collection('messages')
+          .orderBy("time_stamp", descending: true)
+          .limit(1)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.data != null) {
+          if(snapshot.data.docs.length == 0){
+            return Text("No Message", style: TextStyle(fontSize: 14, color: Colors.grey),);
+          }
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: snapshot.data.docs.length,
+            itemBuilder: (context, index) {
+              Map doc = snapshot.data.docs[index].data();
+              String dataid = snapshot.data.docs[index].id;
+              // Group group = value.userGroups.reversed.toList()[index];
+              // Group group = Group(
+              //     id: int.parse(doc.docID),
+              //     name: doc.data["name"],
+              //     photo: doc.data["photo"],
+              //     description: doc.data["description"],
+              //     totalMembers: 0,
+              //     certificate: "",
+              //     type: "",
+              //     year: "",
+              //     schoolId: 0,
+              //     schoolName: "");
+
+              return RichText(
+                overflow: TextOverflow.ellipsis,
+                text: TextSpan(
+                  text: "",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: Theme.of(context).accentColor),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: " ${doc["message"]}" ?? "",
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                  ],
+                ),
+                maxLines: 1,
+              );
+            },
+          );
+        } else
+          return Text("...");
+      },
+    );
+  }
+  Widget TimeWidget(String groupId, String userId) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('messages')
+          .doc(groupId)
+          .collection('messages')
+          .orderBy("time_stamp", descending: true)
+          .limit(1)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.data != null) {
+          if(snapshot.data.docs.length == 0){
+            return Text("00.00", style: TextStyle(fontSize: 14, color: Colors.grey),);
+          }
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: snapshot.data.docs.length,
+            itemBuilder: (context, index) {
+              Map doc = snapshot.data.docs[index].data();
+              return Text(
+                 DateFormat('kk:mm').format(
+                     DateTime.fromMillisecondsSinceEpoch(
+                         doc['time_stamp'])),
+                 style: AppStyle.txtSFProTextMedium12Gray500
+                     .copyWith(
+                   letterSpacing: getHorizontalSize(
+                     0.06,
+                   ),
+                 ),
+               );
+            },
+          );
+        } else
+          return Text("00.00");
+      },
     );
   }
 }

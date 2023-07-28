@@ -14,19 +14,13 @@ class AppDecoration {
   static BoxDecoration get outlineOrangeA2002 => BoxDecoration(
         color: ColorConstant.whiteA700,
         border: Border(
-          top: BorderSide(
-            color: ColorConstant.orangeA200,
-            width: getHorizontalSize(
-              1,
-            ),
-          ),
-          bottom: BorderSide(
-            color: ColorConstant.orangeA200,
-            width: getHorizontalSize(
-              1,
-            ),
-          ),
+
         ),
+       borderRadius:BorderRadius.circular(
+         getHorizontalSize(
+           10,
+         ),
+       )
       );
   static BoxDecoration get fillOrangeA200 => BoxDecoration(
         color: ColorConstant.orangeA200,

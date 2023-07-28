@@ -78,7 +78,7 @@ class CustomTextFormField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         focusNode: focusNode,
-        style: _setFontStyle(),
+        // style: _setFontStyle(),
         obscureText: isObscureText,
         textInputAction: textInputAction,
         keyboardType: textInputType,
@@ -112,7 +112,7 @@ class CustomTextFormField extends StatelessWidget {
     switch (fontStyle) {
       case TextFormFieldFontStyle.SFProTextRegular16Gray500:
         return TextStyle(
-          color: ColorConstant.gray500,
+          color: Colors.black12,
           fontSize: getFontSize(
             16,
           ),
@@ -124,7 +124,7 @@ class CustomTextFormField extends StatelessWidget {
         );
       case TextFormFieldFontStyle.InterRegular16:
         return TextStyle(
-          color: ColorConstant.gray400,
+          color: Colors.black12,
           fontSize: getFontSize(
             16,
           ),
@@ -136,7 +136,7 @@ class CustomTextFormField extends StatelessWidget {
         );
       default:
         return TextStyle(
-          color: ColorConstant.gray400,
+          color: Colors.black12,
           fontSize: getFontSize(
             16,
           ),

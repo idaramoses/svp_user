@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 // import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:svp_admin_pm/presentation/auth/signin/sign_in_service.dart';
@@ -11,6 +15,7 @@ import '../../../routes/app_routes.dart';
 import '../../../utils/app_local_storage.dart';
 import '../../../utils/flushbar_mixin.dart';
 import '../../../utils/store_manager.dart';
+import '../../main_dashboard/user_dashboard.dart';
 import '../../profile_screen/state/profile_provider.dart';
 
 class SignInController with FlushBarMixin {
@@ -48,12 +53,9 @@ class SignInController with FlushBarMixin {
         await storage.store("user", await response["body"]);
         getuserprofile();
         showSuccessNotification(context, "Sign in successful");
-
-        Navigator.pushReplacementNamed(
-            context, AppRoutes.maindashboardOneScreen);
-      } else if (response["status"] == "500 Internal Server Error" &&
-          response["message"] ==
-              "Incorrect Password! Please check and try again.") {
+        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>MainDashboardScreen(id: 0)));
+      } else if (response["status"] == "error" &&
+          response["message"] == "Invalid Credentials.") {
         showErrorNotification(context, "Wrong Email or Password");
       } else if (response["error"]["message"] ==
           "Your credentials does not match our record.") {
@@ -115,6 +117,7 @@ class SignInController with FlushBarMixin {
         //save user to state and local database
         authProvider.userInfo = await response["body"];
         await storage.store("user", await response["body"]);
+        userOnline(context);
         showSuccessNotification(
             context, "Please check your mail to reset password");
       } else if (response["status"] == "error" &&
@@ -152,6 +155,7 @@ class SignInController with FlushBarMixin {
         //save user to state and local database
         authProvider.userInfo = await response["body"];
         await storage.store("user", await response["body"]);
+        userOnline(context);
         showSuccessNotification(context, "Password changed correctly");
         Navigator.of(context)
             .pushNamedAndRemoveUntil("/auth_home", (Route r) => r == null);
@@ -172,19 +176,24 @@ class SignInController with FlushBarMixin {
     }
   }
 
+  void fetchUsers() async {
+    const url = 'https://randomuser.me/api/?results=20';
+    final uri = Uri.parse(url);
+    final response = await http.get(uri);
+    final body = response.body;
+    final json = jsonDecode(body);
+    print('fetch user completed');
+  }
+
   Future getuserprofile() async {
+    String role =
+        Provider.of<AuthProvider>(context, listen: false).userInfo.role;
     try {
-      Map<String, dynamic> response = await signInService.userprofiles();
-      if (response["status"] == "success") {
-        // profileProvider.userInfo = await response["body"];
-        // profileProvider.userInfo.firstname =
-        //     await response["body"]["firstname"];
-        authProvider.userInfo = await response["body"];
-        await storage.store("user", await response["body"]);
-        // await storage.store("user", await response["body"]);
-      } else {
-        // alumniProvider.totalreferals = 0;
-      }
+        Map<String, dynamic> response = await signInService.pmprofiles();
+        if (response["status"] == "success") {
+          authProvider.userInfo = await response["body"];
+          await storage.store("user", await response["body"]);
+        } else {}
     } catch (e) {
       print(e);
     }
@@ -198,6 +207,7 @@ class SignInController with FlushBarMixin {
     authProvider.userInfo = null;
     profileProvider.userInfo = null;
     await storage.store("user", null);
+    showSuccessNotification(context, "Log out successful");
   }
 
   Future<void> patchUserData(
@@ -263,6 +273,15 @@ class SignInController with FlushBarMixin {
     } catch (e) {
       print(e);
     }
+  }
+
+  userOnline(context) async {
+    await SignInController(context: context).patchUserData(
+        Provider.of<AuthProvider>(context, listen: false)
+            .userInfo
+            .id
+            .toString(),
+        {"status": "online"});
   }
 
   Future<void> patchEditProfile(String id, FormData formData) async {
