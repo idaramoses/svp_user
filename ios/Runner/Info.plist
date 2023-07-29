@@ -22,6 +22,14 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Our application needs permission to write photos...</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app requires access to photos, gallery, files and etc.. library for attachments messages </string>
+	<key>NSCameraUsageDescription</key>
+    <string>This Allows us access to your camera to enable you take photos to upload to your profile or to share your moments in arena posts, chats and school forums</string>
+    <key>NSContactsUsageDescription</key>
+    <string>Grant Contacts permission</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
