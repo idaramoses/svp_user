@@ -1,112 +1,76 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-import 'package:svp_admin_pm/models/messages.dart';
-import 'package:svp_admin_pm/presentation/auth/signin/state/auth_provider.dart';
-import 'package:svp_admin_pm/presentation/main_dashboard/user_dashboard.dart';
-import 'package:svp_admin_pm/presentation/messages_screen/state/messages_provider.dart';
-import 'package:svp_admin_pm/presentation/notifications_one_screen/state/notification_provider.dart';
-import 'package:svp_admin_pm/presentation/onboarding_page/onboarding_screen.dart';
-import 'package:svp_admin_pm/presentation/profile_screen/state/profile_provider.dart';
-import 'package:svp_admin_pm/presentation/projects_main/state/project_provider.dart';
-import 'package:svp_admin_pm/presentation/reports_page/state/report_provider.dart';
-import 'package:svp_admin_pm/presentation/splash.dart';
-import 'package:svp_admin_pm/presentation/tasks_page_main/state/task_provider.dart';
-import 'package:svp_admin_pm/routes/app_routes.dart';
-import 'package:svp_admin_pm/utils/app_local_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
-import 'models/main_user.dart';
-
-
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp();
-  runApp(MyApp());
+void main() {
+  runApp(MaterialApp(home: Home()));
 }
-class MyApp extends StatelessWidget {
-  final AppLocalStorage storage = AppLocalStorage();
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //     theme: ThemeData(
-  //       visualDensity: VisualDensity.standard,
-  //     ),
-  //     title: 'svp_admin_pm',
-  //     debugShowCheckedModeBanner: false,
-  //     initialRoute: AppRoutes.signupScreen,
-  //     routes: AppRoutes.routes,
-  //   );
-  // }
+
+class Home extends StatefulWidget {
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final ImagePicker imgpicker = ImagePicker();
+  List<XFile> imagefiles;
+
+  openImages() async {
+    try {
+      var pickedfiles = await imgpicker.pickMultiImage();
+      //you can use ImageCourse.camera for Camera capture
+      if (pickedfiles != null) {
+        imagefiles = pickedfiles;
+        setState(() {});
+      } else {
+        print("No image is selected.");
+      }
+    } catch (e) {
+      print("error while picking file.");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(1080, 1920),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) {
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (_) => ProjectProvider()),
-            ChangeNotifierProvider(create: (_) => AuthProvider()),
-            ChangeNotifierProvider(create: (_) => ProfileProvider()),
-            ChangeNotifierProvider(create: (_) => TaskProvider()),
-            ChangeNotifierProvider(create: (_) => ReportProvider()),
-            ChangeNotifierProvider(create: (_) => NotificationProvider()),
-            ChangeNotifierProvider(create: (_) => MessagesProvider()),
-          ],
-          child: MaterialApp(
-            home: FutureBuilder(
-              future: fetchAuthData(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data["token"] != null) {
-                    if (checkAuthenticated(snapshot.data)) {
-                      return MainDashboardScreen(id: 0);
-                    }
-                  }
-                  return OnboardingScreen();
-                } else {
-                  return FutureBuilder(
-                    future: Future.delayed(Duration(seconds: 7)),
-                    builder: (context, snapshot) {
-                      return SplashScreen();
-                    },
-                  );
-                }
-              },
-            ),
-            title: "SVP",
-            theme: ThemeData(
-              visualDensity: VisualDensity.standard,
-            ),
-            routes: AppRoutes.routes,
-            debugShowCheckedModeBanner: false,
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text("Multiple Image Picker Flutter"),
+          backgroundColor: Colors.deepPurpleAccent,
+        ),
+        body: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(20),
+          child: Column(
+            children: [
+              //open button ----------------
+              ElevatedButton(
+                  onPressed: () {
+                    openImages();
+                  },
+                  child: Text("Open Images")),
+
+              Divider(),
+              Text("Picked Files:"),
+              Divider(),
+
+              imagefiles != null
+                  ? Wrap(
+                      children: imagefiles.map((imageone) {
+                        return Container(
+                            child: Card(
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            child: Image.file(File(imageone.path)),
+                          ),
+                        ));
+                      }).toList(),
+                    )
+                  : Container()
+            ],
           ),
-        );
-      },
-    );
-  }
-
-  bool checkAuthenticated(data) {
-    if (data["token"] != null &&
-        data["token"] != "" &&
-        data["user"] != null &&
-        data["user"] != "") return true;
-
-    return false;
-  }
-
-  Future<Map<String, dynamic>> fetchAuthData() async {
-    String token = await storage.fetch("token");
-    Map<String, dynamic> _user = await storage.fetch("user");
-    User user = (_user != null) ? User.fromJson({..._user}) : User();
-
-    return {
-      "token": token,
-      "user": user,
-    };
+        ));
   }
 }
