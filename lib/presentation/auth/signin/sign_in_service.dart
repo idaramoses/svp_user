@@ -13,6 +13,16 @@ class SignInService with Services {
     return {};
   }
 
+  Future<Map<String, dynamic>> signup(Map<String, dynamic> credentials) async {
+    try {
+      final response = await apiPostRequests("auth/signup", credentials);
+      return response;
+    } catch (e) {
+      print(e);
+    }
+    return {};
+  }
+
   Future<Map<String, dynamic>> Reset(Map<String, dynamic> credentials) async {
     try {
       final response = await apiPostRequests("password/email", credentials);
@@ -22,8 +32,6 @@ class SignInService with Services {
     }
     return {};
   }
-
-
 
   Future<Map<String, dynamic>> pmprofiles() async {
     try {

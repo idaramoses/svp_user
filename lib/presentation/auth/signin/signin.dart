@@ -1,11 +1,13 @@
-import 'dart:io';
-
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:svp_admin_pm/core/app_export.dart';
 import 'package:svp_admin_pm/presentation/auth/signin/sign_in_controller.dart';
 import 'package:svp_admin_pm/widgets/custom_button.dart';
+
+import '../../../utils/app_local_storage.dart';
 
 class signin extends StatefulWidget {
   @override
@@ -18,6 +20,7 @@ class _signinState extends State<signin> {
   TextEditingController passwordController = TextEditingController();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  AppLocalStorage storage = AppLocalStorage();
 
   bool isLoading = false;
   bool isEmailValid = false;
@@ -25,25 +28,6 @@ class _signinState extends State<signin> {
 
   bool issec = true;
 
-  Future<bool> _willPopCallback() {
-    Future.delayed(
-        const Duration(milliseconds: 1000), () {
-      if (Platform.isIOS) {
-        try {
-          exit(0);
-        } catch (e) {
-          SystemNavigator.pop(); // for IOS, not true this, you can make comment this :)
-        }
-      } else {
-        try {
-          SystemNavigator.pop(); // sometimes it cant exit app
-        } catch (e) {
-          exit(
-              0); // so i am giving crash to app ... sad :(
-        }
-      }
-    });
-  }
   @override
   Widget build(BuildContext context) {
     Widget emailTextField = Card(
@@ -262,8 +246,7 @@ class _signinState extends State<signin> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomImageView(
-                                svgPath:
-                                    ImageConstant.imgComputerGray50024x24,
+                                svgPath: ImageConstant.imgComputerGray50024x24,
                                 height: getSize(
                                   24,
                                 ),
@@ -294,8 +277,8 @@ class _signinState extends State<signin> {
                                   "Forgot Password?",
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
-                                  style: AppStyle
-                                      .txtSFProTextRegular14OrangeA200,
+                                  style:
+                                      AppStyle.txtSFProTextRegular14OrangeA200,
                                 ),
                               ),
                             ],
@@ -415,22 +398,27 @@ class _signinState extends State<signin> {
                                 ),
                               ),
                               CustomButton(
+                                onTap: () {
+                                  signInWithApple();
+                                },
                                 height: getVerticalSize(
                                   56,
                                 ),
                                 width: getHorizontalSize(
                                   336,
                                 ),
-                                text: "Sign up with Google",
+                                text: "Sign up with Apple",
                                 variant: ButtonVariant.OutlineGray100,
                                 padding: ButtonPadding.PaddingAll7,
-                                fontStyle: ButtonFontStyle.SFProTextMedium12,
+                                fontStyle:
+                                    ButtonFontStyle.SFProTextMedium12Gray800,
                                 prefixWidget: Container(
                                   margin: getMargin(
                                     right: 16,
                                   ),
-                                  child: CustomImageView(
-                                    svgPath: ImageConstant.imgGoogle,
+                                  child: Icon(
+                                    Icons.apple_outlined,
+                                    color: Colors.black54,
                                   ),
                                 ),
                                 alignment: Alignment.center,
@@ -532,6 +520,83 @@ class _signinState extends State<signin> {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+  Future signInWithApple() async {
+    if (await AppleSignIn.isAvailable()) {
+      if (await storage.fetch("appleEmail") != null) {
+        if (!isLoading) {
+          setState(() {
+            isLoading = true;
+          });
+
+          try {
+            // await SignInController(
+            //   context: context,
+            // ).signIn({
+            //   "email": await storage.fetch("appleEmail"),
+            //   "password": "123456",
+            // });
+          } catch (e) {
+            print(e);
+          }
+          setState(() {
+            isLoading = false;
+          });
+        }
+        return;
+      }
+      final AuthorizationResult result = await AppleSignIn.performRequests([
+        AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+      ]);
+      switch (result.status) {
+        case AuthorizationStatus.authorized:
+          await storage.store("appleEmail", result.credential.email);
+          await storage.store(
+              "appleFirstName", result.credential.fullName.givenName);
+          await storage.store(
+              "appleLastName", result.credential.fullName.familyName);
+
+          //All the required credential
+
+          Map<String, dynamic> alumatesUserCredentials = {
+            "firstname": "${result.credential.fullName.givenName} ",
+            "lastname": "${result.credential.fullName.familyName}",
+            "avatar":
+                "https://avataaars.io/?avatarStyle=Circle&topType=ShortHairDreads01&accessoriesType=Round&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
+            "email": result.credential.email,
+            "password": "123456"
+          };
+          print(alumatesUserCredentials);
+          print(result.credential.email ?? "no result");
+          if (!isLoading) {
+            setState(() {
+              isLoading = true;
+            });
+            try {
+              await SignInController(
+                context: context,
+              ).signUp(alumatesUserCredentials);
+            } catch (e) {
+              print(e);
+            }
+            setState(() {
+              isLoading = false;
+            });
+          }
+
+          break;
+        case AuthorizationStatus.error:
+          Fluttertoast.showToast(msg: "Sign in failed");
+          break;
+        case AuthorizationStatus.cancelled:
+          Fluttertoast.showToast(msg: "User cancelled");
+          break;
+      }
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Apple SignIn is not available for your device');
     }
   }
 }

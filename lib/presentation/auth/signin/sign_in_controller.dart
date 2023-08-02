@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:svp_admin_pm/presentation/auth/signin/sign_in_service.dart';
 import 'package:svp_admin_pm/presentation/auth/signin/state/auth_provider.dart';
 
-import '../../../routes/app_routes.dart';
 import '../../../utils/app_local_storage.dart';
 import '../../../utils/flushbar_mixin.dart';
 import '../../../utils/store_manager.dart';
@@ -53,7 +52,10 @@ class SignInController with FlushBarMixin {
         await storage.store("user", await response["body"]);
         getuserprofile();
         showSuccessNotification(context, "Sign in successful");
-        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>MainDashboardScreen(id: 0)));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MainDashboardScreen(id: 0)));
       } else if (response["status"] == "error" &&
           response["message"] == "Invalid Credentials.") {
         showErrorNotification(context, "Wrong Email or Password");
@@ -68,6 +70,36 @@ class SignInController with FlushBarMixin {
       print(error);
       showErrorNotification(
           context, "Network Error, Check your internet connection.!");
+    }
+  }
+
+  Future<void> signUp(Map<String, dynamic> credentials) async {
+    authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    try {
+      if (credentials["email"] == null) {
+        showErrorNotification(
+            context, "Email is required to sign up, enable email to continue!");
+        return;
+      }
+      Map<String, dynamic> response =
+          await signInService.signup({...credentials});
+
+      if (response["status"] == "success") {
+        await SignInController(context: context).signIn(
+          {
+            "email": credentials["email"],
+            "password": credentials["password"],
+          },
+        );
+      } else {
+        showErrorNotification(context, response["error"]["errors"]["email"][0]);
+        googleSignIn.signOut();
+      }
+    } catch (error) {
+      googleSignIn.signOut();
+      print(error);
+      showErrorNotification(context, "Error Signing in, try again");
     }
   }
 
@@ -189,11 +221,11 @@ class SignInController with FlushBarMixin {
     String role =
         Provider.of<AuthProvider>(context, listen: false).userInfo.role;
     try {
-        Map<String, dynamic> response = await signInService.pmprofiles();
-        if (response["status"] == "success") {
-          authProvider.userInfo = await response["body"];
-          await storage.store("user", await response["body"]);
-        } else {}
+      Map<String, dynamic> response = await signInService.pmprofiles();
+      if (response["status"] == "success") {
+        authProvider.userInfo = await response["body"];
+        await storage.store("user", await response["body"]);
+      } else {}
     } catch (e) {
       print(e);
     }

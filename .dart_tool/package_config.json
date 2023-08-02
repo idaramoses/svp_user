@@ -26,6 +26,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "apple_sign_in",
+      "rootUri": "file:///Users/mac/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/apple_sign_in-0.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
+    },
+    {
       "name": "archive",
       "rootUri": "file:///Users/mac/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/archive-3.3.6",
       "packageUri": "lib/",
@@ -854,7 +860,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2023-07-29T19:25:48.403190Z",
+  "generated": "2023-08-02T10:42:30.308347Z",
   "generator": "pub",
   "generatorVersion": "2.17.0"
 }
