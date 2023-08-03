@@ -426,51 +426,51 @@ class _signinState extends State<signin> {
                             ],
                           ),
                         ),
-                        // Align(
-                        //   alignment: Alignment.centerRight,
-                        //   child: Padding(
-                        //     padding: getPadding(
-                        //       top: 32,
-                        //       right: 2,
-                        //       bottom: 189,
-                        //     ),
-                        //     child: GestureDetector(
-                        //       onTap: () {
-                        //         Navigator.pushNamed(
-                        //             context, AppRoutes.signupScreen);
-                        //       },
-                        //       child: RichText(
-                        //         text: TextSpan(
-                        //           children: [
-                        //             TextSpan(
-                        //               text: "Don't have an account?",
-                        //               style: TextStyle(
-                        //                 color: ColorConstant.gray800,
-                        //                 fontSize: getFontSize(
-                        //                   16,
-                        //                 ),
-                        //                 fontFamily: 'SF Pro Text',
-                        //                 fontWeight: FontWeight.w400,
-                        //               ),
-                        //             ),
-                        //             TextSpan(
-                        //               text: "  Create Account.",
-                        //               style: TextStyle(
-                        //                 color: ColorConstant.orangeA200,
-                        //                 fontSize: getFontSize(
-                        //                   16,
-                        //                 ),
-                        //                 fontFamily: 'SF Pro Text',
-                        //                 fontWeight: FontWeight.w600,
-                        //               ),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         textAlign: TextAlign.left,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: getPadding(
+                              top: 32,
+                              right: 2,
+                              bottom: 189,
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.signupScreen);
+                              },
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "Don't have an account?",
+                                      style: TextStyle(
+                                        color: ColorConstant.gray800,
+                                        fontSize: getFontSize(
+                                          16,
+                                        ),
+                                        fontFamily: 'SF Pro Text',
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "  Create Account.",
+                                      style: TextStyle(
+                                        color: ColorConstant.orangeA200,
+                                        fontSize: getFontSize(
+                                          16,
+                                        ),
+                                        fontFamily: 'SF Pro Text',
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

@@ -4,6 +4,8 @@ import 'package:svp_admin_pm/core/app_export.dart';
 import 'package:svp_admin_pm/widgets/custom_button.dart';
 import 'package:svp_admin_pm/widgets/custom_text_form_field.dart';
 
+import '../signin/sign_in_controller.dart';
+
 class signup extends StatefulWidget {
   @override
   State<signup> createState() => _signupState();
@@ -11,12 +13,15 @@ class signup extends StatefulWidget {
 
 class _signupState extends State<signup> {
   TextEditingController emailController = TextEditingController();
+  TextEditingController firstnameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool issec = true;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +90,49 @@ class _signupState extends State<signup> {
                             top: 23,
                           ),
                           child: Text(
+                            "Firstname",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: AppStyle.txtSFProTextSemibold16Gray800,
+                          ),
+                        ),
+                        CustomTextFormField(
+                          controller: firstnameController,
+                          hintText: "Enter your first name",
+                          margin: getMargin(
+                            left: 1,
+                            top: 15,
+                          ),
+                          textInputType: TextInputType.emailAddress,
+                        ),
+                        Padding(
+                          padding: getPadding(
+                            left: 1,
+                            top: 23,
+                          ),
+                          child: Text(
+                            "Lastname",
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: AppStyle.txtSFProTextSemibold16Gray800,
+                          ),
+                        ),
+                        CustomTextFormField(
+                          focusNode: FocusNode(),
+                          controller: lastnameController,
+                          hintText: "Enter your lastname",
+                          margin: getMargin(
+                            left: 1,
+                            top: 15,
+                          ),
+                          textInputType: TextInputType.emailAddress,
+                        ),
+                        Padding(
+                          padding: getPadding(
+                            left: 1,
+                            top: 23,
+                          ),
+                          child: Text(
                             "Email",
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
@@ -94,6 +142,7 @@ class _signupState extends State<signup> {
                         CustomTextFormField(
                           focusNode: FocusNode(),
                           controller: emailController,
+                          validator: validateEmail,
                           hintText: "Enter your email",
                           margin: getMargin(
                             left: 1,
@@ -116,6 +165,7 @@ class _signupState extends State<signup> {
                         CustomTextFormField(
                           focusNode: FocusNode(),
                           controller: passwordController,
+                          validator: validatepassword,
                           margin: getMargin(
                             left: 1,
                             top: 15,
@@ -141,9 +191,7 @@ class _signupState extends State<signup> {
                                 }
                               },
                               child: Icon(
-                                issec
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                                issec ? Icons.visibility_off : Icons.visibility,
                                 size: 20,
                               ),
                             ),
@@ -165,8 +213,7 @@ class _signupState extends State<signup> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CustomImageView(
-                                svgPath:
-                                    ImageConstant.imgComputerGray50024x24,
+                                svgPath: ImageConstant.imgComputerGray50024x24,
                                 height: getSize(
                                   24,
                                 ),
@@ -197,34 +244,75 @@ class _signupState extends State<signup> {
                                   "Forgot Password?",
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
-                                  style: AppStyle
-                                      .txtSFProTextRegular14OrangeA200,
+                                  style:
+                                      AppStyle.txtSFProTextRegular14OrangeA200,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        CustomButton(
-                          height: getVerticalSize(
-                            51,
-                          ),
-                          text: "Create Account",
-                          margin: getMargin(
-                            left: 1,
-                            top: 32,
-                          ),
-                          onTap: () async {
-                            // Map<String, dynamic> credentials = {
-                            //   "email": emailController.text,
-                            //   "password": passwordController.text,
-                            // };
-                            // await signupController(context: context)
-                            //     .signup(credentials);
-                          },
-                          variant: ButtonVariant.FillOrangeA200,
-                          padding: ButtonPadding.PaddingAll11,
-                          fontStyle: ButtonFontStyle.SFProTextBold16WhiteA700,
-                        ),
+                        isLoading
+                            ? Center(
+                                child: Container(
+                                  height: getVerticalSize(
+                                    51,
+                                  ),
+                                  width: getVerticalSize(
+                                    51,
+                                  ),
+                                  margin: getMargin(
+                                    left: 1,
+                                    top: 51,
+                                  ),
+                                  child: CircularProgressIndicator(
+                                    color: Colors.orange,
+                                  ),
+                                ),
+                              )
+                            : CustomButton(
+                                height: getVerticalSize(
+                                  51,
+                                ),
+                                text: "Create Account",
+                                margin: getMargin(
+                                  left: 1,
+                                  top: 32,
+                                ),
+                                onTap: () async {
+                                  Map<String, dynamic> alumatesUserCredentials =
+                                      {
+                                    "firstname": firstnameController.text,
+                                    "lastname": lastnameController.text,
+                                    "avatar":
+                                        "https://avataaars.io/?avatarStyle=Circle&topType=ShortHairDreads01&accessoriesType=Round&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
+                                    "email": emailController.text,
+                                    "password": "123456"
+                                  };
+                                  print(alumatesUserCredentials);
+                                  if (!isLoading) {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    if (_formKey.currentState.validate()) {
+                                      _formKey.currentState.save();
+                                      try {
+                                        await SignInController(
+                                          context: context,
+                                        ).signUp(alumatesUserCredentials);
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    }
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  }
+                                },
+                                variant: ButtonVariant.FillOrangeA200,
+                                padding: ButtonPadding.PaddingAll11,
+                                fontStyle:
+                                    ButtonFontStyle.SFProTextBold16WhiteA700,
+                              ),
                         Container(
                           height: getVerticalSize(
                             56,
@@ -303,27 +391,6 @@ class _signupState extends State<signup> {
                                   ),
                                 ),
                               ),
-                              CustomButton(
-                                height: getVerticalSize(
-                                  56,
-                                ),
-                                width: getHorizontalSize(
-                                  336,
-                                ),
-                                text: "Sign up with Google",
-                                variant: ButtonVariant.OutlineGray100,
-                                padding: ButtonPadding.PaddingAll7,
-                                fontStyle: ButtonFontStyle.SFProTextMedium12,
-                                prefixWidget: Container(
-                                  margin: getMargin(
-                                    right: 16,
-                                  ),
-                                  child: CustomImageView(
-                                    svgPath: ImageConstant.imgGoogle,
-                                  ),
-                                ),
-                                alignment: Alignment.center,
-                              ),
                             ],
                           ),
                         ),
@@ -382,5 +449,21 @@ class _signupState extends State<signup> {
         ),
       ),
     );
+  }
+
+  String validateEmail(String value) {
+    if (value.trim().length < 1) return "Email can't be empty";
+    if (!RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(value.trim())) return "Invalid email address";
+    return null;
+  }
+
+  String validatepassword(String value) {
+    if (value.trim().length < 6)
+      return "Password must be more than 6 characters";
+    if (!RegExp(r'^(?=.*?[a-z])').hasMatch(value.trim()))
+      return "Password must contain capital,small letters and numbers";
+    return null;
   }
 }
