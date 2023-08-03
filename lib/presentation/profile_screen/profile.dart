@@ -110,10 +110,21 @@ class _Profile_ScreenState extends State<Profile_Screen> with FlushBarMixin {
                 ),
                 Padding(
                   padding: getPadding(
+                    top: 7,
+                  ),
+                  child: Text(
+                    value.userInfo.lastName ?? '...',
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: AppStyle.txtSFProTextBold12Gray500,
+                  ),
+                ),
+                Padding(
+                  padding: getPadding(
                     top: 4,
                   ),
                   child: Text(
-                    '',
+                    value.userInfo.email ?? '...',
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.left,
                     style: AppStyle.txtSFProTextRegular14,

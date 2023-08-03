@@ -111,8 +111,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 height: ScreenUtil().setHeight(120),
                                 child: FlatButton(
                                   onPressed: () {
-                                    Navigator.pushReplacementNamed(
-                                        context, AppRoutes.welcomeScreen);
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.signinScreen);
                                   },
                                   splashColor: Colors.black12,
                                   child: Text(
@@ -130,8 +130,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 height: ScreenUtil().setHeight(120),
                                 child: FlatButton(
                                   onPressed: () {
-                                    Navigator.pushReplacementNamed(
-                                        context, AppRoutes.welcomeScreen);
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.signinScreen);
                                   },
                                   child: Text('Start',
                                       style: TextStyle(
@@ -151,8 +151,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 height: ScreenUtil().setHeight(120),
                                 child: FlatButton(
                                   onPressed: () {
-                                    Navigator.pushReplacementNamed(
-                                        context, AppRoutes.welcomeScreen);
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.signinScreen);
                                   },
                                   child: Text('Next',
                                       style: TextStyle(
