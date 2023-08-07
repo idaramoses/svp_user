@@ -13,6 +13,17 @@ class SignInService with Services {
     return {};
   }
 
+  Future<Map<String, dynamic>> delete(Map<String, dynamic> credentials) async {
+    try {
+      final response =
+          await apiPostRequests("user/delete/account", credentials);
+      return response;
+    } catch (e) {
+      print(e);
+    }
+    return {};
+  }
+
   Future<Map<String, dynamic>> signup(Map<String, dynamic> credentials) async {
     try {
       final response = await apiPostRequests("auth/signup", credentials);

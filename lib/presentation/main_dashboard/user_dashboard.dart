@@ -117,6 +117,41 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
     });
   }
 
+  Future<void> _showMyDialog() async {
+    Map<String, dynamic> credentials = {};
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Account?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Do you want to delete your account?'),
+                Text('It wil be deleted permanently.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                SignInController(context: context).delete(credentials);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -413,51 +448,65 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
                                       ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: getPadding(left: 10, right: 10),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Container(
-                                              width: getHorizontalSize(150),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  ListTile(
-                                                    onTap: () async {
-                                                      SignInController(
-                                                              context: context)
-                                                          .signOut()
-                                                          .whenComplete(() {
-                                                        Navigator
-                                                            .pushReplacementNamed(
-                                                                context,
-                                                                AppRoutes
-                                                                    .onboardScreen);
-                                                      });
-                                                    },
-                                                    leading: CustomImageView(
-                                                      svgPath: ImageConstant
-                                                          .imgArrowright,
-                                                    ),
-                                                    title: Text(
-                                                      "Log out",
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      textAlign: TextAlign.left,
-                                                      style: AppStyle
-                                                          .txtInterBold16,
-                                                    ),
+                                  Spacer(),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: getHorizontalSize(150),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                ListTile(
+                                                  onTap: () async {
+                                                    SignInController(
+                                                            context: context)
+                                                        .signOut()
+                                                        .whenComplete(() {
+                                                      Navigator
+                                                          .pushReplacementNamed(
+                                                              context,
+                                                              AppRoutes
+                                                                  .onboardScreen);
+                                                    });
+                                                  },
+                                                  leading: CustomImageView(
+                                                    svgPath: ImageConstant
+                                                        .imgArrowright,
                                                   ),
-                                                  Divider(),
-                                                ],
-                                              ),
+                                                  title: Text(
+                                                    "Log out",
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    textAlign: TextAlign.left,
+                                                    style:
+                                                        AppStyle.txtInterBold16,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  ListTile(
+                                    onTap: () async {
+                                      _showMyDialog();
+                                    },
+                                    tileColor: Colors.red,
+                                    leading: Icon(
+                                      Icons.delete_forever_outlined,
+                                      color: Colors.white,
+                                      size: 30,
+                                    ),
+                                    title: Text(
+                                      "Delete",
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(color: Colors.white),
                                     ),
                                   ),
                                 ],

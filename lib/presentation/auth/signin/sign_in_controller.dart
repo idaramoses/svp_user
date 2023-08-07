@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:svp_admin_pm/presentation/auth/signin/sign_in_service.dart';
 import 'package:svp_admin_pm/presentation/auth/signin/state/auth_provider.dart';
 
+import '../../../routes/app_routes.dart';
 import '../../../utils/app_local_storage.dart';
 import '../../../utils/flushbar_mixin.dart';
 import '../../../utils/store_manager.dart';
@@ -63,6 +64,26 @@ class SignInController with FlushBarMixin {
           "Your credentials does not match our record.") {
         showErrorNotification(
             context, "Your credentials does not match our record.");
+      } else {
+        showErrorNotification(context, response["error"]["message"]);
+      }
+    } catch (error) {
+      print(error);
+      showErrorNotification(
+          context, "Network Error, Check your internet connection.!");
+    }
+  }
+
+  Future<void> delete(Map<String, dynamic> credentials) async {
+    authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    try {
+      Map<String, dynamic> response =
+          await signInService.delete({...credentials});
+
+      if (response["status"] == "success") {
+        Navigator.pushReplacementNamed(context, AppRoutes.onboardScreen);
+        showSuccessNotification(context, "Account deleted ");
       } else {
         showErrorNotification(context, response["error"]["message"]);
       }
@@ -232,7 +253,6 @@ class SignInController with FlushBarMixin {
   }
 
   Future signOut() async {
-    // googleSignIn.signOut();
     authProvider = Provider.of<AuthProvider>(context, listen: false);
     authProvider.token = "";
     await storage.store("token", "");

@@ -286,7 +286,7 @@ class _signupState extends State<signup> {
                                     "avatar":
                                         "https://avataaars.io/?avatarStyle=Circle&topType=ShortHairDreads01&accessoriesType=Round&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
                                     "email": emailController.text,
-                                    "password": "123456"
+                                    "password": passwordController.text
                                   };
                                   print(alumatesUserCredentials);
                                   if (!isLoading) {

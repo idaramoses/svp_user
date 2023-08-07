@@ -494,8 +494,8 @@ class _signinState extends State<signin> {
   String validatepassword(String value) {
     if (value.trim().length < 6)
       return "Password must be more than 6 characters";
-    if (!RegExp(r'^(?=.*?[a-z])').hasMatch(value.trim()))
-      return "Password must contain capital,small letters and numbers";
+    // if (!RegExp(r'^(?=.*?[a-z])').hasMatch(value.trim()))
+    //   return "Password must contain capital,small letters and numbers";
     return null;
   }
 
