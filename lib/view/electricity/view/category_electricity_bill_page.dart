@@ -14,7 +14,6 @@ import '../../../res/common/app_button.dart';
 import '../../../res/common/app_methods.dart';
 import '../../../res/common/app_textfield.dart';
 import '../../../res/constant/app_routes_path.dart';
-import '../../../res/constant/app_strings.dart';
 import '../../../utils/themes.dart';
 import '../controller/electricity_controller.dart';
 
@@ -181,306 +180,562 @@ class _CategoryElectricityBillPageState
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: CommonMethods.appBar(
-            onTap: () {
-              CommonMethods.jumpOutFromScreen(context);
-            },
-            backgroundColor: Themes.getScaffoldColor(context),
-            title: CommonMethods.appTexts(
-              context,
-              'Buy Electricity',
-              color: Themes.getTextColor(context),
-              fontSize: 28.sp,
-              fontWeight: FontWeight.w700,
-            ),
-            actions: []),
-        body: Stack(
-          children: [
-            Column(
-              children: [
-                CommonMethods.sizedBox(height: 16.h),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10.w,
-                    vertical: 9.h,
+      child: WillPopScope(
+        onWillPop: () async {
+          Get.toNamed(RoutesPath.bottomBarPage);
+          return true;
+        },
+        child: Scaffold(
+          appBar: CommonMethods.appBar(
+              onTap: () {
+                // CommonMethods.jumpOutFromScreen(context);
+                Get.toNamed(RoutesPath.bottomBarPage);
+              },
+              backgroundColor: Themes.getScaffoldColor(context),
+              title: CommonMethods.appTexts(
+                context,
+                'Buy Electricity',
+                color: Themes.getTextColor(context),
+                fontSize: 28.sp,
+                fontWeight: FontWeight.w700,
+              ),
+              actions: []),
+          body: Stack(
+            children: [
+              Column(
+                children: [
+                  CommonMethods.sizedBox(height: 16.h),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                      vertical: 9.h,
+                    ),
+                    child: LinearProgressIndicator(
+                      value: _progressValue,
+                      backgroundColor: Themes.getCardColor(context),
+                      minHeight: 15.h,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
+                    ),
                   ),
-                  child: LinearProgressIndicator(
-                    value: _progressValue,
-                    backgroundColor: Themes.getCardColor(context),
-                    minHeight: 15.h,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
-                  ),
-                ),
-                // Container(
-                //   height: 60.h,
-                //   padding: EdgeInsets.symmetric(
-                //     horizontal: 10.w,
-                //     vertical: 9.h,
-                //   ),
-                //   child: SingleChildScrollView(
-                //     scrollDirection: Axis.horizontal,
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.start,
-                //       children: [
-                //         InkWell(
-                //           child: Container(
-                //             padding: EdgeInsets.symmetric(horizontal: 15),
-                //             alignment: Alignment.center,
-                //             decoration: BoxDecoration(
-                //               border: Border(
-                //                 bottom: BorderSide(
-                //                   color: selectedIndex == 0
-                //                       ? Themes.getPrimaryColor(context)
-                //                       : Colors.transparent,
-                //                   width: 2,
-                //                 ),
-                //               ),
-                //             ),
-                //             child: Text(
-                //               'Select Location',
-                //               style: TextStyle(
-                //                 fontSize: 14.sp,
-                //                 fontWeight: selectedIndex == 0
-                //                     ? FontWeight.bold
-                //                     : FontWeight.w300,
-                //                 color: selectedIndex == 0
-                //                     ? Themes.getTextColor(context)
-                //                     : Themes.getTextColor(context)
-                //                         .withOpacity(0.7),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //         InkWell(
-                //           child: Container(
-                //             padding: EdgeInsets.symmetric(horizontal: 15),
-                //             alignment: Alignment.center,
-                //             decoration: BoxDecoration(
-                //               border: Border(
-                //                 bottom: BorderSide(
-                //                   color: selectedIndex == 1
-                //                       ? Themes.getPrimaryColor(context)
-                //                       : Colors.transparent,
-                //                   width: 2,
-                //                 ),
-                //               ),
-                //             ),
-                //             child: Text(
-                //               'Meter Details',
-                //               style: TextStyle(
-                //                 fontSize: 14.sp,
-                //                 fontWeight: selectedIndex == 1
-                //                     ? FontWeight.bold
-                //                     : FontWeight.w300,
-                //                 color: selectedIndex == 1
-                //                     ? Themes.getTextColor(context)
-                //                     : Themes.getTextColor(context)
-                //                         .withOpacity(0.7),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //         InkWell(
-                //           child: Container(
-                //             padding: EdgeInsets.symmetric(horizontal: 15),
-                //             alignment: Alignment.center,
-                //             decoration: BoxDecoration(
-                //               border: Border(
-                //                 bottom: BorderSide(
-                //                   color: selectedIndex == 2
-                //                       ? Themes.getPrimaryColor(context)
-                //                       : Colors.transparent,
-                //                   width: 2,
-                //                 ),
-                //               ),
-                //             ),
-                //             child: Text(
-                //               'Confirm Details',
-                //               style: TextStyle(
-                //                 fontSize: 14.sp,
-                //                 fontWeight: selectedIndex == 2
-                //                     ? FontWeight.bold
-                //                     : FontWeight.w300,
-                //                 color: selectedIndex == 2
-                //                     ? Themes.getTextColor(context)
-                //                     : Themes.getTextColor(context)
-                //                         .withOpacity(0.7),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //         InkWell(
-                //           child: Container(
-                //             padding: EdgeInsets.symmetric(horizontal: 15),
-                //             alignment: Alignment.center,
-                //             decoration: BoxDecoration(
-                //               border: Border(
-                //                 bottom: BorderSide(
-                //                   color: selectedIndex == 3
-                //                       ? Themes.getPrimaryColor(context)
-                //                       : Colors.transparent,
-                //                   width: 2,
-                //                 ),
-                //               ),
-                //             ),
-                //             child: Text(
-                //               'Make Payment',
-                //               style: TextStyle(
-                //                 fontSize: 14.sp,
-                //                 fontWeight: selectedIndex == 3
-                //                     ? FontWeight.bold
-                //                     : FontWeight.w300,
-                //                 color: selectedIndex == 3
-                //                     ? Themes.getTextColor(context)
-                //                     : Themes.getTextColor(context)
-                //                         .withOpacity(0.7),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //         InkWell(
-                //           child: Container(
-                //             padding: EdgeInsets.symmetric(horizontal: 15),
-                //             alignment: Alignment.center,
-                //             decoration: BoxDecoration(
-                //               border: Border(
-                //                 bottom: BorderSide(
-                //                   color: selectedIndex == 4
-                //                       ? Themes.getPrimaryColor(context)
-                //                       : Colors.transparent,
-                //                   width: 2,
-                //                 ),
-                //               ),
-                //             ),
-                //             child: Text(
-                //               'Complete Order',
-                //               style: TextStyle(
-                //                 fontSize: 14.sp,
-                //                 fontWeight: selectedIndex == 4
-                //                     ? FontWeight.bold
-                //                     : FontWeight.w300,
-                //                 color: selectedIndex == 4
-                //                     ? Themes.getTextColor(context)
-                //                     : Themes.getTextColor(context)
-                //                         .withOpacity(0.7),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                CommonMethods.sizedBox(height: 16.h),
-                selectedIndex == 0
-                    ? Expanded(
-                        child: Padding(
-                          padding: CommonMethods.appPadding(),
-                          child: isLoading
-                              ? Center(
-                                  child: CircularProgressIndicator(
-                                  color: Themes.getPrimaryColor(context),
-                                ))
-                              : Column(
-                                  children: [
-                                    Expanded(
-                                      child: ListView.builder(
-                                        itemCount: widget.regions.length,
-                                        itemBuilder: (context, index) {
-                                          return Column(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    state =
-                                                    '${widget.regions[index]}';
-                                                    isLoading = true;
-                                                  });
-                                                  selectstate(
-                                                      '${widget.regions[index]}');
-                                                  // postData();
-                                                },
-                                                child: Container(
-                                                  height: 54.h,
-                                                  decoration: CommonMethods
-                                                      .getBoxDecoration(
-                                                    cornerRadius: 20.r,
-                                                    color: Themes
-                                                        .getCardColor(
-                                                        context),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                    EdgeInsets.only(
-                                                      left: 16.w,
-                                                      right: 17.71.w,
+                  // Container(
+                  //   height: 60.h,
+                  //   padding: EdgeInsets.symmetric(
+                  //     horizontal: 10.w,
+                  //     vertical: 9.h,
+                  //   ),
+                  //   child: SingleChildScrollView(
+                  //     scrollDirection: Axis.horizontal,
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.start,
+                  //       children: [
+                  //         InkWell(
+                  //           child: Container(
+                  //             padding: EdgeInsets.symmetric(horizontal: 15),
+                  //             alignment: Alignment.center,
+                  //             decoration: BoxDecoration(
+                  //               border: Border(
+                  //                 bottom: BorderSide(
+                  //                   color: selectedIndex == 0
+                  //                       ? Themes.getPrimaryColor(context)
+                  //                       : Colors.transparent,
+                  //                   width: 2,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             child: Text(
+                  //               'Select Location',
+                  //               style: TextStyle(
+                  //                 fontSize: 14.sp,
+                  //                 fontWeight: selectedIndex == 0
+                  //                     ? FontWeight.bold
+                  //                     : FontWeight.w300,
+                  //                 color: selectedIndex == 0
+                  //                     ? Themes.getTextColor(context)
+                  //                     : Themes.getTextColor(context)
+                  //                         .withOpacity(0.7),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         InkWell(
+                  //           child: Container(
+                  //             padding: EdgeInsets.symmetric(horizontal: 15),
+                  //             alignment: Alignment.center,
+                  //             decoration: BoxDecoration(
+                  //               border: Border(
+                  //                 bottom: BorderSide(
+                  //                   color: selectedIndex == 1
+                  //                       ? Themes.getPrimaryColor(context)
+                  //                       : Colors.transparent,
+                  //                   width: 2,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             child: Text(
+                  //               'Meter Details',
+                  //               style: TextStyle(
+                  //                 fontSize: 14.sp,
+                  //                 fontWeight: selectedIndex == 1
+                  //                     ? FontWeight.bold
+                  //                     : FontWeight.w300,
+                  //                 color: selectedIndex == 1
+                  //                     ? Themes.getTextColor(context)
+                  //                     : Themes.getTextColor(context)
+                  //                         .withOpacity(0.7),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         InkWell(
+                  //           child: Container(
+                  //             padding: EdgeInsets.symmetric(horizontal: 15),
+                  //             alignment: Alignment.center,
+                  //             decoration: BoxDecoration(
+                  //               border: Border(
+                  //                 bottom: BorderSide(
+                  //                   color: selectedIndex == 2
+                  //                       ? Themes.getPrimaryColor(context)
+                  //                       : Colors.transparent,
+                  //                   width: 2,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             child: Text(
+                  //               'Confirm Details',
+                  //               style: TextStyle(
+                  //                 fontSize: 14.sp,
+                  //                 fontWeight: selectedIndex == 2
+                  //                     ? FontWeight.bold
+                  //                     : FontWeight.w300,
+                  //                 color: selectedIndex == 2
+                  //                     ? Themes.getTextColor(context)
+                  //                     : Themes.getTextColor(context)
+                  //                         .withOpacity(0.7),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         InkWell(
+                  //           child: Container(
+                  //             padding: EdgeInsets.symmetric(horizontal: 15),
+                  //             alignment: Alignment.center,
+                  //             decoration: BoxDecoration(
+                  //               border: Border(
+                  //                 bottom: BorderSide(
+                  //                   color: selectedIndex == 3
+                  //                       ? Themes.getPrimaryColor(context)
+                  //                       : Colors.transparent,
+                  //                   width: 2,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             child: Text(
+                  //               'Make Payment',
+                  //               style: TextStyle(
+                  //                 fontSize: 14.sp,
+                  //                 fontWeight: selectedIndex == 3
+                  //                     ? FontWeight.bold
+                  //                     : FontWeight.w300,
+                  //                 color: selectedIndex == 3
+                  //                     ? Themes.getTextColor(context)
+                  //                     : Themes.getTextColor(context)
+                  //                         .withOpacity(0.7),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         InkWell(
+                  //           child: Container(
+                  //             padding: EdgeInsets.symmetric(horizontal: 15),
+                  //             alignment: Alignment.center,
+                  //             decoration: BoxDecoration(
+                  //               border: Border(
+                  //                 bottom: BorderSide(
+                  //                   color: selectedIndex == 4
+                  //                       ? Themes.getPrimaryColor(context)
+                  //                       : Colors.transparent,
+                  //                   width: 2,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             child: Text(
+                  //               'Complete Order',
+                  //               style: TextStyle(
+                  //                 fontSize: 14.sp,
+                  //                 fontWeight: selectedIndex == 4
+                  //                     ? FontWeight.bold
+                  //                     : FontWeight.w300,
+                  //                 color: selectedIndex == 4
+                  //                     ? Themes.getTextColor(context)
+                  //                     : Themes.getTextColor(context)
+                  //                         .withOpacity(0.7),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  CommonMethods.sizedBox(height: 16.h),
+                  selectedIndex == 0
+                      ? Expanded(
+                          child: Padding(
+                            padding: CommonMethods.appPadding(),
+                            child: isLoading
+                                ? Center(
+                                    child: CircularProgressIndicator(
+                                    color: Themes.getPrimaryColor(context),
+                                  ))
+                                : Column(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                          itemCount: widget.regions.length,
+                                          itemBuilder: (context, index) {
+                                            return Column(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      state =
+                                                          '${widget.regions[index]}';
+                                                      isLoading = true;
+                                                    });
+                                                    selectstate(
+                                                        '${widget.regions[index]}');
+                                                    // postData();
+                                                  },
+                                                  child: Container(
+                                                    height: 54.h,
+                                                    decoration: CommonMethods
+                                                        .getBoxDecoration(
+                                                      cornerRadius: 20.r,
+                                                      color:
+                                                          Themes.getCardColor(
+                                                              context),
                                                     ),
-                                                    child: Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child:
-                                                          CommonMethods
-                                                              .appTexts(
-                                                            context,
-                                                            '${widget.regions[index]}',
-                                                            color: Themes
-                                                                .getTextColor(
-                                                                context),
-                                                            fontSize: 16.sp,
-                                                            fontWeight:
-                                                            FontWeight
-                                                                .w400,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                        left: 16.w,
+                                                        right: 17.71.w,
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: CommonMethods
+                                                                .appTexts(
+                                                              context,
+                                                              '${widget.regions[index]}',
+                                                              color: Themes
+                                                                  .getTextColor(
+                                                                      context),
+                                                              fontSize: 16.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
                                                           ),
-                                                        ),
-                                                        Icon(Icons.arrow_forward_ios_sharp,size: 20.h,),
-                                                      ],
+                                                          Icon(
+                                                            Icons
+                                                                .arrow_forward_ios_sharp,
+                                                            size: 20.h,
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              CommonMethods.sizedBox(
-                                                  height: 16.h)
-                                            ],
-                                          );
-                                        },
+                                                CommonMethods.sizedBox(
+                                                    height: 16.h)
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      ),
+
+                                      // Add other widgets below the ListView if needed
+                                    ],
+                                  ),
+                          ),
+                        )
+                      : Container(),
+                  selectedIndex == 1
+                      ? Expanded(
+                          child: Padding(
+                            padding: CommonMethods.appPadding(),
+                            child: Form(
+                              key: formKey,
+                              child: ListView(
+                                children: [
+                                  ListTile(
+                                    leading: SvgPicture.network(
+                                      "$image",
+                                      height: 45.h,
+                                      width: 45.h,
+                                      placeholderBuilder:
+                                          (BuildContext context) => Container(
+                                        padding: const EdgeInsets.all(30.0),
+                                        child: CircularProgressIndicator(),
                                       ),
                                     ),
+                                    title: Text(
+                                      '$companyName'.toUpperCase(),
+                                      style: TextStyle(
+                                        color: Themes.getTextColor(context),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      '$state',
+                                      style: TextStyle(
+                                        color: Themes.getTextColor(context),
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ),
+                                  CommonMethods.sizedBox(height: 10.h),
+                                  Divider(
+                                    color: Themes.getDividerColor(context),
+                                  ),
+                                  CommonMethods.sizedBox(height: 10.h),
+                                  AppTextFieldScreen(
+                                    controller:
+                                        electricityController.meterController,
+                                    isDense: true,
+                                    hintText: 'Meter Number',
+                                    label: CommonMethods.appTexts(
+                                      context,
+                                      'Meter Number',
+                                    ),
+                                    textInputType: TextInputType.phone,
+                                    keyboardType: TextInputAction.next,
+                                    validator: (val) {
+                                      if (val!.trim().isNotEmpty) {
+                                        if (val.trim().isEmpty) {
+                                          return "Please enter a valid meter number";
+                                        }
+                                        return null;
+                                      }
+                                      return "Please enter a valid meter number";
+                                    },
+                                  ),
+                                  CommonMethods.sizedBox(height: 24.h),
+                                  AppTextFieldScreen(
+                                    controller: electricityController.amount,
+                                    isDense: true,
+                                    hintText: 'Amount',
+                                    label: CommonMethods.appTexts(
+                                      context,
+                                      'Amount',
+                                    ),
+                                    textInputType: TextInputType.phone,
+                                    keyboardType: TextInputAction.next,
+                                    validator: (val) {
+                                      if (val!.trim().isNotEmpty) {
+                                        if (val.trim().isEmpty) {
+                                          return "Please enter a valid meter amount";
+                                        }
+                                        return null;
+                                      }
+                                      return "Please enter a valid meter amount";
+                                    },
+                                  ),
+                                  CommonMethods.sizedBox(height: 24.h),
+                                  Container(
+                                    height: 50.h,
+                                    width: double.infinity,
+                                    decoration: CommonMethods.getBoxDecoration(
+                                      cornerRadius: 16.r,
+                                      borderColor: Themes.getTextColor(context)!
+                                          .withOpacity(0.2),
+                                    ),
+                                    child: Padding(
+                                      padding: CommonMethods.appPadding(),
+                                      child: Row(
+                                        children: [
+                                          DropdownButton<String>(
+                                            value: selectedValue,
+                                            dropdownColor:
+                                                Themes.getCardColor(context),
+                                            onChanged: (String? newValue) {
+                                              setState(() {
+                                                selectedValue = newValue!;
+                                              });
+                                            },
+                                            items: <String>[
+                                              'Prepaid',
+                                              'Postpaid'
+                                            ].map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(
+                                                  value,
+                                                  style: TextStyle(
+                                                    color: Themes.getTextColor(
+                                                        context),
+                                                    fontSize: 15.sp,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  CommonMethods.sizedBox(height: 24.h),
+                                  isLoading
+                                      ? Container(
+                                          height: 54.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(64.r),
+                                            color:
+                                                Themes.getPrimaryColor(context),
+                                          ),
+                                          child: const Center(
+                                              child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                          )))
+                                      : GestureDetector(
+                                          onTap: () async {
+                                            if (formKey.currentState!
+                                                .validate()) {
+                                              debugPrint("Success");
+                                              setState(() {
+                                                isLoading = true;
+                                              });
+                                              final url = Uri.parse(
+                                                  'https://www.sparkhub.ng/api/meters/verify?meter=${electricityController.meterController.text}&location=${state}&type=${selectedValue}');
+                                              // final Map<String, dynamic> data = {
+                                              //   "meter": "1111111111111",
+                                              //   "location": "akwaibom",
+                                              //   "type": "prepaid"
+                                              // };
+                                              try {
+                                                final response = await http.get(
+                                                  url,
+                                                  // body: jsonEncode(data),
+                                                  headers: {
+                                                    'Content-Type':
+                                                        'application/json',
+                                                    // Add any additional headers here
+                                                  },
+                                                );
 
-                                    // Add other widgets below the ListView if needed
-                                  ],
-                                ),
-                        ),
-                      )
-                    : Container(),
-                selectedIndex == 1
-                    ? Expanded(
-                        child: Padding(
-                          padding: CommonMethods.appPadding(),
-                          child: Form(
-                            key: formKey,
+                                                if (response.statusCode ==
+                                                    200) {
+                                                  // Request was successful
+                                                  print(
+                                                      'Response: ${response.body}');
+                                                  final decodedData = json
+                                                      .decode(response.body);
+                                                  print(
+                                                      'Decoded Data: ${decodedData['Customer_Name']}');
+                                                  setState(() {
+                                                    Customer_Name =
+                                                        '${decodedData['Customer_Name']}';
+                                                    Address =
+                                                        '${decodedData['Address']}';
+                                                    MeterNumber =
+                                                        '${decodedData['MeterNumber']}';
+                                                    Customer_Phone =
+                                                        '${decodedData['Customer_Phone']}';
+                                                    Meter_Type =
+                                                        '${decodedData['Meter_Type']}';
+                                                    selectedIndex = 2;
+                                                    _progressValue = 0.6;
+                                                    isLoading = false;
+                                                  });
+                                                } else {
+                                                  // Request failed with an error
+                                                  Get.snackbar(
+                                                    'Error',
+                                                    'Invalid meter number',
+                                                    snackPosition:
+                                                        SnackPosition.TOP,
+                                                    colorText: Colors.white,
+                                                    backgroundColor: Colors.red,
+                                                    duration:
+                                                        Duration(seconds: 1),
+                                                  );
+                                                  setState(() {
+                                                    isLoading = false;
+                                                  });
+                                                }
+                                              } catch (e) {
+                                                // Handle exceptions
+                                                Get.snackbar(
+                                                  'Error',
+                                                  'Check your network connection',
+                                                  snackPosition:
+                                                      SnackPosition.TOP,
+                                                  colorText: Colors.white,
+                                                  backgroundColor: Colors.red,
+                                                  duration:
+                                                      Duration(seconds: 1),
+                                                );
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                                print('Exception: $e');
+                                              }
+                                            }
+                                          },
+                                          child: const AppButton(
+                                            text: 'Validate',
+                                          ),
+                                        ),
+                                  CommonMethods.sizedBox(height: 24.h),
+                                  Row(
+                                    children: [
+                                      TextButton.icon(
+                                        onPressed: () {
+                                          setState(() {
+                                            selectedIndex = 0;
+                                          });
+                                        },
+                                        icon: Icon(
+                                          Icons.arrow_back,
+                                          color:
+                                              Themes.getPrimaryColor(context),
+                                        ),
+                                        label: Text(
+                                          'Previous',
+                                          style: TextStyle(
+                                            color:
+                                                Themes.getPrimaryColor(context),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  selectedIndex == 2
+                      ? Expanded(
+                          child: Padding(
+                            padding: CommonMethods.appPadding(),
                             child: ListView(
                               children: [
                                 ListTile(
-                                  leading: SvgPicture.network(
-                                    "$image",
-                                    height: 45.h,
-                                    width: 45.h,
-                                    placeholderBuilder:
-                                        (BuildContext context) => Container(
-                                      padding: const EdgeInsets.all(30.0),
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  ),
                                   title: Text(
-                                    '$companyName'.toUpperCase(),
+                                    'Confirm Details',
                                     style: TextStyle(
                                       color: Themes.getTextColor(context),
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 20.sp,
                                     ),
                                   ),
                                   subtitle: Text(
-                                    '$state',
+                                    'Please confirm that the details of your meter are correct before proceeding to pay.',
                                     style: TextStyle(
                                       color: Themes.getTextColor(context),
                                       fontWeight: FontWeight.w300,
@@ -492,90 +747,119 @@ class _CategoryElectricityBillPageState
                                   color: Themes.getDividerColor(context),
                                 ),
                                 CommonMethods.sizedBox(height: 10.h),
-                                AppTextFieldScreen(
-                                  controller:
-                                      electricityController.meterController,
-                                  isDense: true,
-                                  hintText: 'Meter Number',
-                                  label: CommonMethods.appTexts(
-                                    context,
-                                    'Meter Number',
-                                  ),
-                                  textInputType: TextInputType.phone,
-                                  keyboardType: TextInputAction.next,
-                                  validator: (val) {
-                                    if (val!.trim().isNotEmpty) {
-                                      if (val.trim().isEmpty) {
-                                        return "Please enter a valid meter number";
-                                      }
-                                      return null;
-                                    }
-                                    return "Please enter a valid meter number";
-                                  },
-                                ),
-                                CommonMethods.sizedBox(height: 24.h),
-                                AppTextFieldScreen(
-                                  controller: electricityController.amount,
-                                  isDense: true,
-                                  hintText: 'Amount',
-                                  label: CommonMethods.appTexts(
-                                    context,
-                                    'Amount',
-                                  ),
-                                  textInputType: TextInputType.phone,
-                                  keyboardType: TextInputAction.next,
-                                  validator: (val) {
-                                    if (val!.trim().isNotEmpty) {
-                                      if (val.trim().isEmpty) {
-                                        return "Please enter a valid meter amount";
-                                      }
-                                      return null;
-                                    }
-                                    return "Please enter a valid meter amount";
-                                  },
-                                ),
-                                CommonMethods.sizedBox(height: 24.h),
-                                Container(
-                                  height: 50.h,
-                                  width: double.infinity,
-                                  decoration: CommonMethods.getBoxDecoration(
-                                    cornerRadius: 16.r,
-                                    borderColor: Themes.getTextColor(context)!
-                                        .withOpacity(0.2),
-                                  ),
-                                  child: Padding(
-                                    padding: CommonMethods.appPadding(),
-                                    child: Row(
-                                      children: [
-                                        DropdownButton<String>(
-                                          value: selectedValue,
-                                          dropdownColor:
-                                              Themes.getCardColor(context),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              selectedValue = newValue!;
-                                            });
-                                          },
-                                          items: <String>['Prepaid', 'Postpaid']
-                                              .map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(
-                                                  color: Themes.getTextColor(
-                                                      context),
-                                                  fontSize: 15.sp,
-                                                  fontWeight: FontWeight.w300,
-                                                ),
-                                              ),
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ],
+                                ListTile(
+                                  title: Text(
+                                    'Customer Name',
+                                    style: TextStyle(
+                                      color: Themes.getTextColor(context),
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
+                                  subtitle: Text(
+                                    '$Customer_Name',
+                                    style: TextStyle(
+                                      color: Themes.getTextColor(context),
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  color: Themes.getDividerColor(context),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    'Address',
+                                    style: TextStyle(
+                                      color: Themes.getTextColor(context),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    '$Address',
+                                    style: TextStyle(
+                                      color: Themes.getTextColor(context),
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  color: Themes.getDividerColor(context),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    'Meter Number',
+                                    style: TextStyle(
+                                      color: Themes.getTextColor(context),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    '$MeterNumber',
+                                    style: TextStyle(
+                                      color: Themes.getTextColor(context),
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  color: Themes.getDividerColor(context),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    'Customer Phone',
+                                    style: TextStyle(
+                                      color: Themes.getTextColor(context),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    '$Customer_Phone',
+                                    style: TextStyle(
+                                      color: Themes.getTextColor(context),
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  color: Themes.getDividerColor(context),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    'Meter Type',
+                                    style: TextStyle(
+                                      color: Themes.getTextColor(context),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    '$Meter_Type',
+                                    style: TextStyle(
+                                      color: Themes.getTextColor(context),
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  color: Themes.getDividerColor(context),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    'Amount',
+                                    style: TextStyle(
+                                      color: Themes.getTextColor(context),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    '${electricityController.amount.text}',
+                                    style: TextStyle(
+                                      color: Themes.getTextColor(context),
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  color: Themes.getDividerColor(context),
                                 ),
                                 CommonMethods.sizedBox(height: 24.h),
                                 isLoading
@@ -593,89 +877,14 @@ class _CategoryElectricityBillPageState
                                         )))
                                     : GestureDetector(
                                         onTap: () async {
-                                          if (formKey.currentState!
-                                              .validate()) {
-                                            debugPrint("Success");
-                                            setState(() {
-                                              isLoading = true;
-                                            });
-                                            final url = Uri.parse(
-                                                'https://www.sparkhub.ng/api/meters/verify?meter=${electricityController.meterController.text}&location=${state}&type=${selectedValue}');
-                                            // final Map<String, dynamic> data = {
-                                            //   "meter": "1111111111111",
-                                            //   "location": "akwaibom",
-                                            //   "type": "prepaid"
-                                            // };
-                                            try {
-                                              final response = await http.get(
-                                                url,
-                                                // body: jsonEncode(data),
-                                                headers: {
-                                                  'Content-Type':
-                                                      'application/json',
-                                                  // Add any additional headers here
-                                                },
-                                              );
-
-                                              if (response.statusCode == 200) {
-                                                // Request was successful
-                                                print(
-                                                    'Response: ${response.body}');
-                                                final decodedData =
-                                                    json.decode(response.body);
-                                                print(
-                                                    'Decoded Data: ${decodedData['Customer_Name']}');
-                                                setState(() {
-                                                  Customer_Name =
-                                                      '${decodedData['Customer_Name']}';
-                                                  Address =
-                                                      '${decodedData['Address']}';
-                                                  MeterNumber =
-                                                      '${decodedData['MeterNumber']}';
-                                                  Customer_Phone =
-                                                      '${decodedData['Customer_Phone']}';
-                                                  Meter_Type =
-                                                      '${decodedData['Meter_Type']}';
-                                                  selectedIndex = 2;
-                                                  _progressValue = 0.6;
-                                                  isLoading = false;
-                                                });
-                                              } else {
-                                                // Request failed with an error
-                                                Get.snackbar(
-                                                  'Error',
-                                                  'Invalid meter number',
-                                                  snackPosition:
-                                                      SnackPosition.TOP,
-                                                  colorText: Colors.white,
-                                                  backgroundColor: Colors.red,
-                                                  duration:
-                                                      Duration(seconds: 1),
-                                                );
-                                                setState(() {
-                                                  isLoading = false;
-                                                });
-                                              }
-                                            } catch (e) {
-                                              // Handle exceptions
-                                              Get.snackbar(
-                                                'Error',
-                                                'Check your network connection',
-                                                snackPosition:
-                                                    SnackPosition.TOP,
-                                                colorText: Colors.white,
-                                                backgroundColor: Colors.red,
-                                                duration: Duration(seconds: 1),
-                                              );
-                                              setState(() {
-                                                isLoading = false;
-                                              });
-                                              print('Exception: $e');
-                                            }
-                                          }
+                                          setState(() {
+                                            isLoading = true;
+                                            isverification = true;
+                                          });
+                                          FocusScope.of(context).unfocus();
                                         },
                                         child: const AppButton(
-                                          text: 'Validate',
+                                          text: 'Proceed to pay',
                                         ),
                                       ),
                                 CommonMethods.sizedBox(height: 24.h),
@@ -684,13 +893,12 @@ class _CategoryElectricityBillPageState
                                     TextButton.icon(
                                       onPressed: () {
                                         setState(() {
-                                          selectedIndex = 0;
+                                          selectedIndex = 1;
                                         });
                                       },
                                       icon: Icon(
                                         Icons.arrow_back,
-                                        color:
-                                            Themes.getPrimaryColor(context),
+                                        color: Themes.getPrimaryColor(context),
                                       ),
                                       label: Text(
                                         'Previous',
@@ -702,627 +910,454 @@ class _CategoryElectricityBillPageState
                                     ),
                                   ],
                                 ),
+                                CommonMethods.sizedBox(height: 24.h),
                               ],
                             ),
                           ),
-                        ),
-                      )
-                    : Container(),
-                selectedIndex == 2
-                    ? Expanded(
-                        child: Padding(
-                          padding: CommonMethods.appPadding(),
-                          child: ListView(
-                            children: [
-                              ListTile(
-                                title: Text(
-                                  'Confirm Details',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.sp,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  'Please confirm that the details of your meter are correct before proceeding to pay.',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ),
-                              CommonMethods.sizedBox(height: 10.h),
-                              Divider(
-                                color: Themes.getDividerColor(context),
-                              ),
-                              CommonMethods.sizedBox(height: 10.h),
-                              ListTile(
-                                title: Text(
-                                  'Customer Name',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  '$Customer_Name',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ),
-                              Divider(
-                                color: Themes.getDividerColor(context),
-                              ),
-                              ListTile(
-                                title: Text(
-                                  'Address',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  '$Address',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ),
-                              Divider(
-                                color: Themes.getDividerColor(context),
-                              ),
-                              ListTile(
-                                title: Text(
-                                  'Meter Number',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  '$MeterNumber',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ),
-                              Divider(
-                                color: Themes.getDividerColor(context),
-                              ),
-                              ListTile(
-                                title: Text(
-                                  'Customer Phone',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  '$Customer_Phone',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ),
-                              Divider(
-                                color: Themes.getDividerColor(context),
-                              ),
-                              ListTile(
-                                title: Text(
-                                  'Meter Type',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  '$Meter_Type',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ),
-                              Divider(
-                                color: Themes.getDividerColor(context),
-                              ),
-                              ListTile(
-                                title: Text(
-                                  'Amount',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  '${electricityController.amount.text}',
-                                  style: TextStyle(
-                                    color: Themes.getTextColor(context),
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ),
-                              Divider(
-                                color: Themes.getDividerColor(context),
-                              ),
-                              CommonMethods.sizedBox(height: 24.h),
-                              isLoading
-                                  ? Container(
-                                      height: 54.h,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(64.r),
-                                        color:
-                                            Themes.getPrimaryColor(context),
-                                      ),
-                                      child: const Center(
-                                          child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      )))
-                                  : GestureDetector(
-                                      onTap: () async {
-                                        setState(() {
-                                          isLoading = true;
-                                          isverification = true;
-                                        });
-                                        FocusScope.of(context).unfocus();
-                                      },
-                                      child: const AppButton(
-                                        text: 'Proceed to pay',
-                                      ),
-                                    ),
-                              CommonMethods.sizedBox(height: 24.h),
-                              Row(
-                                children: [
-                                  TextButton.icon(
-                                    onPressed: () {
-                                      setState(() {
-                                        selectedIndex = 1;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      Icons.arrow_back,
-                                      color: Themes.getPrimaryColor(context),
-                                    ),
-                                    label: Text(
-                                      'Previous',
-                                      style: TextStyle(
-                                        color:
-                                            Themes.getPrimaryColor(context),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              CommonMethods.sizedBox(height: 24.h),
-                            ],
-                          ),
-                        ),
-                      )
-                    : Container(),
-                selectedIndex == 3
-                    ? Expanded(
-                        child: Padding(
-                          padding: CommonMethods.appPadding(),
-                          child: ListView(
-                            children: [
-                              CommonMethods.sizedBox(height: 24.h),
-                              error
-                                  ? Column(
-                                      children: [
-                                        Container(
-                                          width: 120
-                                              .h, // Adjust the size as needed
-                                          height: 120
-                                              .h, // Adjust the size as needed
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              color: Colors.red,
-                                              width: 4.0,
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Icon(
-                                              CupertinoIcons.clear,
-                                              color: Colors.red,
-                                              size: 80.h,
-                                            ),
-                                          ),
-                                        ),
-                                        CommonMethods.sizedBox(height: 30.h),
-                                        Text(
-                                          'Oops!',
-                                          style: TextStyle(
-                                            color:
-                                                Themes.getTextColor(context),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 25.sp,
-                                          ),
-                                        ),
-                                        CommonMethods.sizedBox(height: 10.h),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            'Your payment failed and we are not sure why. Please try again. Fingers crossed!',
-                                            style: TextStyle(
-                                              color: Themes.getTextColor(
-                                                  context),
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 15.sp,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                        CommonMethods.sizedBox(height: 30.h),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            setState(() {
-                                              isLoading = true;
-                                            });
-                                            makePayment();
-                                          },
-                                          child: const AppButton(
-                                            text: 'Try again',
-                                          ),
-                                        ),
-                                        CommonMethods.sizedBox(height: 24.h),
-                                        InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              selectedIndex = 0;
-                                            });
-                                          },
-                                          child: Container(
-                                            width: double.infinity,
-                                            height: 50,
+                        )
+                      : Container(),
+                  selectedIndex == 3
+                      ? Expanded(
+                          child: Padding(
+                            padding: CommonMethods.appPadding(),
+                            child: ListView(
+                              children: [
+                                CommonMethods.sizedBox(height: 24.h),
+                                error
+                                    ? Column(
+                                        children: [
+                                          Container(
+                                            width: 120
+                                                .h, // Adjust the size as needed
+                                            height: 120
+                                                .h, // Adjust the size as needed
                                             decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: Colors.red,
+                                                width: 4.0,
+                                              ),
                                             ),
-                                            margin: EdgeInsets.fromLTRB(
-                                                0, 20, 0, 10),
                                             child: Center(
-                                              child: Text(
-                                                "Restart payment",
-                                                style: TextStyle(
-                                                  color:
-                                                      Themes.getPrimaryColor(
-                                                          context),
-                                                ),
+                                              child: Icon(
+                                                CupertinoIcons.clear,
+                                                color: Colors.red,
+                                                size: 80.h,
                                               ),
                                             ),
                                           ),
-                                        )
-                                      ],
-                                    )
-                                  : Container(),
-                              CommonMethods.sizedBox(height: 24.h),
-                              Row(
-                                children: [
-                                  TextButton.icon(
-                                    onPressed: () {
-                                      setState(() {
-                                        selectedIndex = 1;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      Icons.arrow_back,
-                                      color: Themes.getPrimaryColor(context),
-                                    ),
-                                    label: Text(
-                                      'Previous',
-                                      style: TextStyle(
-                                        color:
-                                            Themes.getPrimaryColor(context),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              CommonMethods.sizedBox(height: 24.h),
-                            ],
-                          ),
-                        ),
-                      )
-                    : Container(),
-                selectedIndex == 4
-                    ? Expanded(
-                        child: Padding(
-                          padding: CommonMethods.appPadding(),
-                          child: isLoading
-                              ? Center(
-                                  child: CircularProgressIndicator(
-                                  color: Themes.getPrimaryColor(context),
-                                ))
-                              : ListView(
+                                          CommonMethods.sizedBox(height: 30.h),
+                                          Text(
+                                            'Oops!',
+                                            style: TextStyle(
+                                              color:
+                                                  Themes.getTextColor(context),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25.sp,
+                                            ),
+                                          ),
+                                          CommonMethods.sizedBox(height: 10.h),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              'Your payment failed and we are not sure why. Please try again. Fingers crossed!',
+                                              style: TextStyle(
+                                                color: Themes.getTextColor(
+                                                    context),
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 15.sp,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          CommonMethods.sizedBox(height: 30.h),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              setState(() {
+                                                isLoading = true;
+                                              });
+                                              makePayment();
+                                            },
+                                            child: const AppButton(
+                                              text: 'Try again',
+                                            ),
+                                          ),
+                                          CommonMethods.sizedBox(height: 24.h),
+                                          InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                selectedIndex = 0;
+                                              });
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              margin: EdgeInsets.fromLTRB(
+                                                  0, 20, 0, 10),
+                                              child: Center(
+                                                child: Text(
+                                                  "Restart payment",
+                                                  style: TextStyle(
+                                                    color:
+                                                        Themes.getPrimaryColor(
+                                                            context),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    : Container(),
+                                CommonMethods.sizedBox(height: 24.h),
+                                Row(
                                   children: [
-                                    Container(
-                                      width: 120.h, // Adjust the size as needed
-                                      height:
-                                          120.h, // Adjust the size as needed
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: Colors.green,
-                                          width: 4.0,
-                                        ),
+                                    TextButton.icon(
+                                      onPressed: () {
+                                        setState(() {
+                                          selectedIndex = 1;
+                                        });
+                                      },
+                                      icon: Icon(
+                                        Icons.arrow_back,
+                                        color: Themes.getPrimaryColor(context),
                                       ),
-                                      child: Center(
-                                        child: Icon(
-                                          CupertinoIcons.check_mark,
-                                          color: Colors.green,
-                                          size: 80.h,
+                                      label: Text(
+                                        'Previous',
+                                        style: TextStyle(
+                                          color:
+                                              Themes.getPrimaryColor(context),
                                         ),
                                       ),
                                     ),
-                                    CommonMethods.sizedBox(height: 30.h),
-                                    Text(
-                                      'Congratulations!!!',
-                                      style: TextStyle(
-                                        color: Themes.getTextColor(context),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25.sp,
+                                  ],
+                                ),
+                                CommonMethods.sizedBox(height: 24.h),
+                              ],
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  selectedIndex == 4
+                      ? Expanded(
+                          child: Padding(
+                            padding: CommonMethods.appPadding(),
+                            child: isLoading
+                                ? Center(
+                                    child: CircularProgressIndicator(
+                                    color: Themes.getPrimaryColor(context),
+                                  ))
+                                : ListView(
+                                    children: [
+                                      Container(
+                                        width:
+                                            120.h, // Adjust the size as needed
+                                        height:
+                                            120.h, // Adjust the size as needed
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.green,
+                                            width: 4.0,
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            CupertinoIcons.check_mark,
+                                            color: Colors.green,
+                                            size: 80.h,
+                                          ),
+                                        ),
                                       ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    CommonMethods.sizedBox(height: 10.h),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Your payment has been completed. View the details of your order below:',
+                                      CommonMethods.sizedBox(height: 30.h),
+                                      Text(
+                                        'Congratulations!!!',
                                         style: TextStyle(
                                           color: Themes.getTextColor(context),
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25.sp,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),
-                                    ),
-                                    CommonMethods.sizedBox(height: 30.h),
-                                    Divider(
-                                      color: Themes.getDividerColor(context),
-                                    ),
-                                    ListTile(
-                                      title: Text(
-                                        'Token',
-                                        style: TextStyle(
-                                          color: Themes.getTextColor(context),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                        '${token}' ?? '',
-                                        style: TextStyle(
-                                          color: Themes.getTextColor(context),
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                      ),
-                                    ),
-                                    Divider(
-                                      color: Themes.getDividerColor(context),
-                                    ),
-                                    ListTile(
-                                      title: Text(
-                                        'Amount',
-                                        style: TextStyle(
-                                          color: Themes.getTextColor(context),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                        '${electricityController.amount.text}',
-                                        style: TextStyle(
-                                          color: Themes.getTextColor(context),
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                      ),
-                                    ),
-                                    Divider(
-                                      color: Themes.getDividerColor(context),
-                                    ),
-                                    ListTile(
-                                      title: Text(
-                                        'Status',
-                                        style: TextStyle(
-                                          color: Themes.getTextColor(context),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                        'TRANSACTION SUCCESSFUL',
-                                        style: TextStyle(
-                                          color: Themes.getTextColor(context),
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                      ),
-                                    ),
-                                    CommonMethods.sizedBox(height: 24.h),
-                                    isLoading
-                                        ? Container(
-                                            height: 54.h,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(64.r),
-                                              color: Themes.getPrimaryColor(
-                                                  context),
-                                            ),
-                                            child: const Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                              color: Colors.white,
-                                            )))
-                                        : GestureDetector(
-                                            onTap: () async {
-                                              CommonMethods
-                                                  .sendToNextScreenWithoutBack(
-                                                      context,
-                                                      RoutesPath
-                                                          .paymentTransactionDetailPage,
-                                                      arguments: {
-                                                    'id': '${rowData['id']}',
-                                                    'transaction_id':
-                                                        '${rowData['transaction_id']}',
-                                                    'amount':
-                                                        '${rowData['amount']}',
-                                                    'status':
-                                                        '${rowData['status']}',
-                                                    'email':
-                                                        '${rowData['email']}',
-                                                    'created_at':
-                                                        '${rowData['created_at']}',
-                                                    'phone_number':
-                                                        '${rowData['phone_number']}',
-                                                    'meter':
-                                                        '${rowData['meter']}',
-                                                    'customer_name':
-                                                        '${rowData['customer_name']}',
-                                                    'address':
-                                                        '${rowData['address']}',
-                                                    'token':
-                                                        '${rowData['token']}',
-                                                    'service_provider':
-                                                        '${rowData['service_provider']}',
-                                                  });
-                                            },
-                                            child: const AppButton(
-                                              text: 'View Full Details',
-                                            ),
+                                      CommonMethods.sizedBox(height: 10.h),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Your payment has been completed. View the details of your order below:',
+                                          style: TextStyle(
+                                            color: Themes.getTextColor(context),
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 15.sp,
                                           ),
-                                    CommonMethods.sizedBox(height: 24.h),
-                                  ],
-                                ),
-                        ),
-                      )
-                    : Container(),
-              ],
-            ),
-            isverification
-                ?Container(
-              height: MediaQuery.of(context).size.height,
-              color: Themes.getScaffoldColor(context),
-              child: ListView(
-                children: [
-                  CommonMethods.sizedBox(height: 20.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton.icon(
-                        onPressed: () {
-                          setState(() {
-                            isverification = false;
-                            isLoading = false;
-                          });
-                        },
-                        icon: Icon(
-                          Icons.close,
-                          color: Colors.red,
-                        ),
-                        label: Text(
-                          'Close',
-                          style: TextStyle(
-                            color: Colors.red,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      CommonMethods.sizedBox(height: 30.h),
+                                      Divider(
+                                        color: Themes.getDividerColor(context),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          'Token',
+                                          style: TextStyle(
+                                            color: Themes.getTextColor(context),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          '${token}' ?? '',
+                                          style: TextStyle(
+                                            color: Themes.getTextColor(context),
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      ),
+                                      Divider(
+                                        color: Themes.getDividerColor(context),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          'Amount',
+                                          style: TextStyle(
+                                            color: Themes.getTextColor(context),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          '${electricityController.amount.text}',
+                                          style: TextStyle(
+                                            color: Themes.getTextColor(context),
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      ),
+                                      Divider(
+                                        color: Themes.getDividerColor(context),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          'Status',
+                                          style: TextStyle(
+                                            color: Themes.getTextColor(context),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          'TRANSACTION SUCCESSFUL',
+                                          style: TextStyle(
+                                            color: Themes.getTextColor(context),
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      ),
+                                      CommonMethods.sizedBox(height: 24.h),
+                                      isLoading
+                                          ? Container(
+                                              height: 54.h,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(64.r),
+                                                color: Themes.getPrimaryColor(
+                                                    context),
+                                              ),
+                                              child: const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                color: Colors.white,
+                                              )))
+                                          : GestureDetector(
+                                              onTap: () async {
+                                                CommonMethods
+                                                    .sendToNextScreenWithoutBack(
+                                                        context,
+                                                        RoutesPath
+                                                            .paymentTransactionDetailPage,
+                                                        arguments: {
+                                                      'id': '${rowData['id']}',
+                                                      'transaction_id':
+                                                          '${rowData['transaction_id']}',
+                                                      'amount':
+                                                          '${rowData['amount']}',
+                                                      'status':
+                                                          '${rowData['status']}',
+                                                      'email':
+                                                          '${rowData['email']}',
+                                                      'created_at':
+                                                          '${rowData['created_at']}',
+                                                      'phone_number':
+                                                          '${rowData['phone_number']}',
+                                                      'meter':
+                                                          '${rowData['meter']}',
+                                                      'customer_name':
+                                                          '${rowData['customer_name']}',
+                                                      'address':
+                                                          '${rowData['address']}',
+                                                      'token':
+                                                          '${rowData['token']}',
+                                                      'service_provider':
+                                                          '${rowData['service_provider']}',
+                                                    });
+                                              },
+                                              child: const AppButton(
+                                                text: 'View Full Details',
+                                              ),
+                                            ),
+                                      CommonMethods.sizedBox(height: 24.h),
+                                    ],
+                                  ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  CommonMethods.sizedBox(height: 10.h),
-                  CommonMethods.appTexts(context, 'Enter your  pin',
-                      color: Themes.getTextColor(context),
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.w700,
-                      textAlign: TextAlign.center),
-                  CommonMethods.sizedBox(height: 30.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      for (int i = 0; i < pinCode.length; i++)
-                        Container(
-                          width: 50,
-                          height: 50,
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: isfail
-                                    ? Colors.red
-                                    : iscorrect
-                                    ? Colors.green
-                                    : Colors.grey),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            pinCode[i],
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: Themes.getTextColor(context)),
-                          ),
-                        ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  GridView.count(
-                    crossAxisCount: 3,
-                    shrinkWrap: true,
-                    children: List.generate(
-                      10,
-                          (index) => Container(
-                        padding: EdgeInsets.all(20), // Adjust padding as needed
-                        child: SizedBox(
-
-                          child: TextButton(
-                            onPressed: () => onNumberPressed(index.toString()),
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors.grey.withOpacity(0.1)),
-                              side: MaterialStateProperty.all(BorderSide(
-                                color: Colors.grey.withOpacity(0.2), // Border color
-                                width: 1.0,          // Border width
-                              )),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0), // Border radius
-                                ),
-                              ),
-                            ),
-                            child: Text(index.toString(), style: TextStyle(  fontWeight: FontWeight.bold,fontSize: 20, color: Themes.getPrimaryColor(context),)), // Adjust font size as needed
-                          ),
-                        ),
-                      ),
-                    )..add(
-                      Container(
-                        padding: EdgeInsets.all(20), // Adjust padding as needed
-                        child: SizedBox(
-                          child: TextButton(
-                            onPressed: onBackspacePressed,
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors.grey.withOpacity(0.1)),
-                              side: MaterialStateProperty.all(BorderSide(
-                                color: Colors.grey.withOpacity(0.2), // Border color
-                                width: 1.0,          // Border width
-                              )),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0), // Border radius
-                                ),
-                              ),
-                            ),
-                            child: Icon(Icons.backspace, size: 24, color: Themes.getPrimaryColor(context),), // Adjust icon size as needed
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                        )
+                      : Container(),
                 ],
               ),
-            )
-                : Container(),
-          ],
+              isverification
+                  ? Container(
+                      height: MediaQuery.of(context).size.height,
+                      color: Themes.getScaffoldColor(context),
+                      child: ListView(
+                        children: [
+                          CommonMethods.sizedBox(height: 20.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TextButton.icon(
+                                onPressed: () {
+                                  setState(() {
+                                    isverification = false;
+                                    isLoading = false;
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                ),
+                                label: Text(
+                                  'Close',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          CommonMethods.sizedBox(height: 10.h),
+                          CommonMethods.appTexts(context, 'Enter your  pin',
+                              color: Themes.getTextColor(context),
+                              fontSize: 22.sp,
+                              fontWeight: FontWeight.w700,
+                              textAlign: TextAlign.center),
+                          CommonMethods.sizedBox(height: 30.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              for (int i = 0; i < pinCode.length; i++)
+                                Container(
+                                  width: 50,
+                                  height: 50,
+                                  margin: EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: isfail
+                                            ? Colors.red
+                                            : iscorrect
+                                                ? Colors.green
+                                                : Colors.grey),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    pinCode[i],
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        color: Themes.getTextColor(context)),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          GridView.count(
+                            crossAxisCount: 3,
+                            shrinkWrap: true,
+                            children: List.generate(
+                              10,
+                              (index) => Container(
+                                padding: EdgeInsets.all(
+                                    20), // Adjust padding as needed
+                                child: SizedBox(
+                                  child: TextButton(
+                                    onPressed: () =>
+                                        onNumberPressed(index.toString()),
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.grey.withOpacity(0.1)),
+                                      side:
+                                          MaterialStateProperty.all(BorderSide(
+                                        color: Colors.grey
+                                            .withOpacity(0.2), // Border color
+                                        width: 1.0, // Border width
+                                      )),
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              50.0), // Border radius
+                                        ),
+                                      ),
+                                    ),
+                                    child: Text(index.toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color:
+                                              Themes.getPrimaryColor(context),
+                                        )), // Adjust font size as needed
+                                  ),
+                                ),
+                              ),
+                            )..add(
+                                Container(
+                                  padding: EdgeInsets.all(
+                                      20), // Adjust padding as needed
+                                  child: SizedBox(
+                                    child: TextButton(
+                                      onPressed: onBackspacePressed,
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.grey.withOpacity(0.1)),
+                                        side: MaterialStateProperty.all(
+                                            BorderSide(
+                                          color: Colors.grey
+                                              .withOpacity(0.2), // Border color
+                                          width: 1.0, // Border width
+                                        )),
+                                        shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                50.0), // Border radius
+                                          ),
+                                        ),
+                                      ),
+                                      child: Icon(
+                                        Icons.backspace,
+                                        size: 24,
+                                        color: Themes.getPrimaryColor(context),
+                                      ), // Adjust icon size as needed
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Container(),
+            ],
+          ),
         ),
       ),
     );
