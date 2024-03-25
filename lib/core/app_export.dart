@@ -1,9 +1,0 @@
-export 'package:svp_admin_pm/core/constants/constants.dart';
-export 'package:svp_admin_pm/core/utils/image_constant.dart';
-export 'package:svp_admin_pm/core/utils/color_constant.dart';
-export 'package:svp_admin_pm/core/utils/size_utils.dart';
-export 'package:svp_admin_pm/widgets/custom_image_view.dart';
-export 'package:svp_admin_pm/theme/app_style.dart';
-export 'package:svp_admin_pm/theme/app_decoration.dart';
-export 'package:svp_admin_pm/routes/app_routes.dart';
-export 'package:svp_admin_pm/core/utils/date_time_utils.dart';

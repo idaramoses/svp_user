@@ -1,110 +1,70 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-import 'package:svp_admin_pm/presentation/auth/signin/state/auth_provider.dart';
-import 'package:svp_admin_pm/presentation/main_dashboard/user_dashboard.dart';
-import 'package:svp_admin_pm/presentation/messages_screen/state/messages_provider.dart';
-import 'package:svp_admin_pm/presentation/notifications_one_screen/state/notification_provider.dart';
-import 'package:svp_admin_pm/presentation/onboarding_page/onboarding_screen.dart';
-import 'package:svp_admin_pm/presentation/profile_screen/state/profile_provider.dart';
-import 'package:svp_admin_pm/presentation/projects_main/state/project_provider.dart';
-import 'package:svp_admin_pm/presentation/reports_page/state/report_provider.dart';
-import 'package:svp_admin_pm/presentation/splash.dart';
-import 'package:svp_admin_pm/presentation/tasks_page_main/state/task_provider.dart';
-import 'package:svp_admin_pm/routes/app_routes.dart';
-import 'package:svp_admin_pm/utils/app_local_storage.dart';
+import 'package:get/get.dart';
+import 'package:sharkhub/controller/main_payment_controller.dart';
+import 'package:sharkhub/main_payment.dart';
+import 'package:sharkhub/res/constant/app_routes_path.dart';
+import 'package:sharkhub/view/electricity/controller/electricity_controller.dart';
+import 'package:sharkhub/view/electricity/controller/readmeter_controller.dart';
+import 'package:sharkhub/view/home/controller/home_controller.dart';
 
-import 'models/main_user.dart';
+import 'package:sharkhub/view/profile/controller/profile_controller.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../controller/main_wrapper_controller.dart';
+import '../main_wrapper.dart';
+import '../utils/themes.dart';
+import 'data/service_api.dart';
+
+
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp();
-  runApp(MyApp());
+  await Supabase.initialize(
+    url: 'https://wdzndcahywimomsjpdcd.supabase.co',
+    anonKey:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indkem5kY2FoeXdpbW9tc2pwZGNkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDQ4ODQxNjcsImV4cCI6MjAyMDQ2MDE2N30.MYJDyO4mH9nLrCPm_qKKKv721sUS7US794Y27h_5egY',
+    // authCallbackUrlHostname: 'login-callback', // optional
+  );
+  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp],
+  );
 }
+final supabase = Supabase.instance.client;
 
 class MyApp extends StatelessWidget {
-  final AppLocalStorage storage = AppLocalStorage();
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //     theme: ThemeData(
-  //       visualDensity: VisualDensity.standard,
-  //     ),
-  //     title: 'svp_admin_pm',
-  //     debugShowCheckedModeBanner: false,
-  //     initialRoute: AppRoutes.signupScreen,
-  //     routes: AppRoutes.routes,
-  //   );
-  // }
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(1080, 1920),
+      designSize: const Size(428, 926),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (_) => ProjectProvider()),
-            ChangeNotifierProvider(create: (_) => AuthProvider()),
-            ChangeNotifierProvider(create: (_) => ProfileProvider()),
-            ChangeNotifierProvider(create: (_) => TaskProvider()),
-            ChangeNotifierProvider(create: (_) => ReportProvider()),
-            ChangeNotifierProvider(create: (_) => NotificationProvider()),
-            ChangeNotifierProvider(create: (_) => MessagesProvider()),
-          ],
-          child: MaterialApp(
-            home: FutureBuilder(
-              future: fetchAuthData(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data["token"] != null) {
-                    if (checkAuthenticated(snapshot.data)) {
-                      return MainDashboardScreen(id: 0);
-                    }
-                  }
-                  return OnboardingScreen();
-                } else {
-                  return FutureBuilder(
-                    future: Future.delayed(Duration(seconds: 7)),
-                    builder: (context, snapshot) {
-                      return SplashScreen();
-                    },
-                  );
-                }
-              },
-            ),
-            title: "SVP",
-            theme: ThemeData(
-              visualDensity: VisualDensity.standard,
-            ),
-            routes: AppRoutes.routes,
-            debugShowCheckedModeBanner: false,
-          ),
+        return GetMaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          theme: Themes.lightTheme,
+          darkTheme: Themes.darkTheme,
+          themeMode: Get.put(MainWrapperController()).theme,
+          routes: RoutesPath.routes,
+          initialBinding: BindingsBuilder(() {
+            Get.put(SuperbaseService());
+            Get.put(ProfileController());
+            Get.put(MainWrapperController());
+            Get.put(MainPaymnentController());
+            Get.put(HomeController());
+            Get.put(ElectricityController());
+            Get.put(ReadMeterController());
+          }),
+          initialRoute: RoutesPath.splashPage,
+          onGenerateRoute: (settings) {
+            return RoutesPath.routesFactory(settings);
+          },
         );
       },
     );
-  }
-
-  bool checkAuthenticated(data) {
-    if (data["token"] != null &&
-        data["token"] != "" &&
-        data["user"] != null &&
-        data["user"] != "") return true;
-
-    return false;
-  }
-
-  Future<Map<String, dynamic>> fetchAuthData() async {
-    String token = await storage.fetch("token");
-    Map<String, dynamic> _user = await storage.fetch("user");
-    User user = (_user != null) ? User.fromJson({..._user}) : User();
-
-    return {
-      "token": token,
-      "user": user,
-    };
   }
 }
