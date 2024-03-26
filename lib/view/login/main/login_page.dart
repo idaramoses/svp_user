@@ -1,14 +1,13 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharkhub/res/constant/app_strings.dart';
 import 'package:sharkhub/view/login/controller/login_controller.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../data/pref_data.dart';
@@ -62,7 +61,6 @@ class _LogInPageState extends State<LogInPage> {
         appBar: CommonMethods.nullAppBar(
           context,
           statusBarColor: Themes.getScaffoldColor(context),
-
         ),
         body: SafeArea(
           child: Stack(
@@ -70,8 +68,8 @@ class _LogInPageState extends State<LogInPage> {
               Form(
                 key: formKey,
                 child: Padding(
-                  padding: EdgeInsets.only(
-                      bottom: 40.h, left: 16.h, right: 16.h),
+                  padding:
+                      EdgeInsets.only(bottom: 40.h, left: 16.h, right: 16.h),
                   child: Stack(
                     children: [
                       Column(
@@ -110,7 +108,7 @@ class _LogInPageState extends State<LogInPage> {
                                 validator: (val) {
                                   if (val!.isNotEmpty) {
                                     if (!RegExp(
-                                        r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                                            r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
                                         .hasMatch(val)) {
                                       return "Please enter a valid email address";
                                     }
@@ -130,16 +128,14 @@ class _LogInPageState extends State<LogInPage> {
                                     context,
                                     AppText.password,
                                   ),
-                                  textInputType:
-                                  TextInputType.visiblePassword,
+                                  textInputType: TextInputType.visiblePassword,
                                   keyboardType: TextInputAction.done,
-                                  obscureText:
-                                  controller.obSecureText.value,
+                                  obscureText: controller.obSecureText.value,
                                   maxLines: 1,
                                   suffixIcon: IconButton(
                                     onPressed: () {
                                       controller.obSecureText.value =
-                                      !controller.obSecureText.value;
+                                          !controller.obSecureText.value;
                                       controller.update();
                                     },
                                     hoverColor: Colors.black,
@@ -147,7 +143,6 @@ class _LogInPageState extends State<LogInPage> {
                                       controller.obSecureText.value
                                           ? AppImages.hidePass
                                           : AppImages.eyeLogin,
-
                                       height: 24.h,
                                       width: 24.h,
                                     ),
@@ -157,7 +152,7 @@ class _LogInPageState extends State<LogInPage> {
                                       if (val.trim().isEmpty) {
                                         return "Please enter a valid password";
                                       } else if (!RegExp(
-                                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])')
+                                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])')
                                           .hasMatch(val.trim())) {
                                         return "Password must contain capital,small letters and numbers";
                                       }
@@ -209,9 +204,9 @@ class _LogInPageState extends State<LogInPage> {
                                       Map<String, dynamic>? metadata =
                                           user?.userMetadata;
                                       final userModel =
-                                      UserModel.fromJson(metadata!);
+                                          UserModel.fromJson(metadata!);
                                       final SharedPreferences prefs =
-                                      await _prefs;
+                                          await _prefs;
                                       await prefs?.setString(
                                           'token', '$accessToken');
                                       await prefs?.setString('location',
@@ -248,7 +243,7 @@ class _LogInPageState extends State<LogInPage> {
                                       // Save user data to SharedPreferences
                                       await _superbaseService
                                           .saveUserDataToLocalStorage(
-                                          userModel);
+                                              userModel);
                                       // Set user data for the profile screen
                                       _profileController.setUserDetails(
                                         userModel.id,
@@ -262,8 +257,7 @@ class _LogInPageState extends State<LogInPage> {
                                       );
                                       logInController.clearText();
                                       PrefData.setLogin(false);
-                                      Get.toNamed(
-                                          RoutesPath.pinValidatePage);
+                                      Get.toNamed(RoutesPath.pinValidatePage);
                                       // Sign-in successful, navigate to the next screen
                                     } catch (e) {
                                       // Handle sign-in failure
@@ -295,145 +289,145 @@ class _LogInPageState extends State<LogInPage> {
                                 ),
                               ),
                               CommonMethods.sizedBox(height: 30.h),
-                              GestureDetector(
-                                onTap: () async {
-                                  final result =
-                                  await supabase.auth.signInWithOAuth(
-                                    Provider.google,
-                                    redirectTo: kIsWeb
-                                        ? null
-                                        : 'io.supabase.flutter://callback',
-                                  );
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  supabase.auth.onAuthStateChange
-                                      .listen((data) async {
-                                    final AuthChangeEvent event =
-                                        data.event;
-                                    if (event == AuthChangeEvent.signedIn) {
-                                      User? user = Supabase
-                                          .instance.client.auth.currentUser;
-                                      // Now you can access user data like user.id, user.email, etc.
-                                      // For example:
-                                      Map<String, dynamic>? metadata =
-                                          user?.userMetadata;
-                                      final userModel =
-                                      UserModel.fromJson(metadata!);
-                                      final SharedPreferences prefs =
-                                      await _prefs;
-                                      // await prefs?.setString(
-                                      //     'token', '$accessToken');
-                                      await prefs?.setString('location',
-                                          '${metadata['location']}');
-                                      await prefs?.setString(
-                                          'email', '${user?.email}');
-                                      await prefs?.setString('firstname',
-                                          '${metadata['firstname']}');
-                                      await prefs?.setString('lastname',
-                                          '${metadata['lastname']}');
-                                      await prefs?.setString(
-                                          'id', '${user?.id}');
-                                      await prefs?.setString(
-                                          'phone', '${metadata['phone']}');
-                                      await prefs?.setString(
-                                          'meter', '${metadata['meter']}');
-                                      final isEmailExist = await supabase
-                                          .from('welcome_pin')
-                                          .select()
-                                          .eq('user_id', '${user?.id}')
-                                          .limit(1)
-                                          .maybeSingle();
-                                      if (isEmailExist == null) {
-                                      } else {
-                                        var mainresponse = await supabase
-                                            .from('welcome_pin')
-                                            .select()
-                                            .eq('user_id', '${user?.id}')
-                                            .single();
-                                        await prefs?.setString('pincode',
-                                            '${mainresponse['pin']}');
-                                        await prefs?.setString(
-                                            'welcome', 'yes');
-                                      }
-
-                                      // Save user data to SharedPreferences
-                                      await _superbaseService
-                                          .saveUserDataToLocalStorage(
-                                          userModel);
-                                      // Set user data for the profile screen
-                                      _profileController.setUserDetails(
-                                        userModel.id,
-                                        userModel.firstname,
-                                        userModel.lastname,
-                                        userModel.email,
-                                        userModel.phone,
-                                        userModel.location,
-                                        userModel.meter,
-                                        userModel.accessToken,
-                                      );
-
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-
-                                      if (user == null) {
-                                        throw 'No user is currently signed in.';
-                                      }
-
-                                      // Get the user metadata
-                                      final userMetadata =
-                                          user.userMetadata;
-
-                                      // Check if the 'firstname' field exists in the metadata
-                                      final hasFirstName = metadata !=
-                                          null &&
-                                          metadata.containsKey('firstname');
-
-                                      // Print the result
-                                      if (hasFirstName) {
-                                        print(
-                                            'The user has a firstname: ${metadata!['firstname']}');
-                                        Get.toNamed(
-                                            RoutesPath.pinValidatePage);
-                                      } else {
-                                        print(
-                                            'The user does not have a firstname.');
-                                        Get.toNamed(
-                                            RoutesPath.updateProfilePage);
-                                      }
-                                    }
-                                  });
-                                },
-                                child: Container(
-                                  height: 54.h,
-                                  decoration:
-                                  CommonMethods.getBoxDecoration(
-                                    cornerRadius: 30.r,
-                                    color: Themes.getCardColor(context),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
-                                    children: [
-                                      CommonMethods.imagesOfApp(
-                                        AppImages.google,
-                                        height: 24.h,
-                                        width: 24.h,
-                                      ),
-                                      CommonMethods.sizedBox(width: 16.w),
-                                      CommonMethods.appTexts(
-                                        context,
-                                        AppText.google,
-                                        color:
-                                        Themes.getTextColor(context),
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // GestureDetector(
+                              //   onTap: () async {
+                              //     final result =
+                              //     await supabase.auth.signInWithOAuth(
+                              //       Provider.google,
+                              //       redirectTo: kIsWeb
+                              //           ? null
+                              //           : 'io.supabase.flutter://callback',
+                              //     );
+                              //     setState(() {
+                              //       isLoading = true;
+                              //     });
+                              //     supabase.auth.onAuthStateChange
+                              //         .listen((data) async {
+                              //       final AuthChangeEvent event =
+                              //           data.event;
+                              //       if (event == AuthChangeEvent.signedIn) {
+                              //         User? user = Supabase
+                              //             .instance.client.auth.currentUser;
+                              //         // Now you can access user data like user.id, user.email, etc.
+                              //         // For example:
+                              //         Map<String, dynamic>? metadata =
+                              //             user?.userMetadata;
+                              //         final userModel =
+                              //         UserModel.fromJson(metadata!);
+                              //         final SharedPreferences prefs =
+                              //         await _prefs;
+                              //         // await prefs?.setString(
+                              //         //     'token', '$accessToken');
+                              //         await prefs?.setString('location',
+                              //             '${metadata['location']}');
+                              //         await prefs?.setString(
+                              //             'email', '${user?.email}');
+                              //         await prefs?.setString('firstname',
+                              //             '${metadata['firstname']}');
+                              //         await prefs?.setString('lastname',
+                              //             '${metadata['lastname']}');
+                              //         await prefs?.setString(
+                              //             'id', '${user?.id}');
+                              //         await prefs?.setString(
+                              //             'phone', '${metadata['phone']}');
+                              //         await prefs?.setString(
+                              //             'meter', '${metadata['meter']}');
+                              //         final isEmailExist = await supabase
+                              //             .from('welcome_pin')
+                              //             .select()
+                              //             .eq('user_id', '${user?.id}')
+                              //             .limit(1)
+                              //             .maybeSingle();
+                              //         if (isEmailExist == null) {
+                              //         } else {
+                              //           var mainresponse = await supabase
+                              //               .from('welcome_pin')
+                              //               .select()
+                              //               .eq('user_id', '${user?.id}')
+                              //               .single();
+                              //           await prefs?.setString('pincode',
+                              //               '${mainresponse['pin']}');
+                              //           await prefs?.setString(
+                              //               'welcome', 'yes');
+                              //         }
+                              //
+                              //         // Save user data to SharedPreferences
+                              //         await _superbaseService
+                              //             .saveUserDataToLocalStorage(
+                              //             userModel);
+                              //         // Set user data for the profile screen
+                              //         _profileController.setUserDetails(
+                              //           userModel.id,
+                              //           userModel.firstname,
+                              //           userModel.lastname,
+                              //           userModel.email,
+                              //           userModel.phone,
+                              //           userModel.location,
+                              //           userModel.meter,
+                              //           userModel.accessToken,
+                              //         );
+                              //
+                              //         setState(() {
+                              //           isLoading = false;
+                              //         });
+                              //
+                              //         if (user == null) {
+                              //           throw 'No user is currently signed in.';
+                              //         }
+                              //
+                              //         // Get the user metadata
+                              //         final userMetadata =
+                              //             user.userMetadata;
+                              //
+                              //         // Check if the 'firstname' field exists in the metadata
+                              //         final hasFirstName = metadata !=
+                              //             null &&
+                              //             metadata.containsKey('firstname');
+                              //
+                              //         // Print the result
+                              //         if (hasFirstName) {
+                              //           print(
+                              //               'The user has a firstname: ${metadata!['firstname']}');
+                              //           Get.toNamed(
+                              //               RoutesPath.pinValidatePage);
+                              //         } else {
+                              //           print(
+                              //               'The user does not have a firstname.');
+                              //           Get.toNamed(
+                              //               RoutesPath.updateProfilePage);
+                              //         }
+                              //       }
+                              //     });
+                              //   },
+                              //   child: Container(
+                              //     height: 54.h,
+                              //     decoration:
+                              //     CommonMethods.getBoxDecoration(
+                              //       cornerRadius: 30.r,
+                              //       color: Themes.getCardColor(context),
+                              //     ),
+                              //     child: Row(
+                              //       mainAxisAlignment:
+                              //       MainAxisAlignment.center,
+                              //       children: [
+                              //         CommonMethods.imagesOfApp(
+                              //           AppImages.google,
+                              //           height: 24.h,
+                              //           width: 24.h,
+                              //         ),
+                              //         CommonMethods.sizedBox(width: 16.w),
+                              //         CommonMethods.appTexts(
+                              //           context,
+                              //           AppText.google,
+                              //           color:
+                              //           Themes.getTextColor(context),
+                              //           fontSize: 18.sp,
+                              //           fontWeight: FontWeight.w600,
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                               // Column(
                               //   children: [
                               //     CommonMethods.sizedBox(height: 16.h),
@@ -532,8 +526,7 @@ class _LogInPageState extends State<LogInPage> {
                                       fontSize: 16.sp,
                                       fontFamily: "SF Pro Display",
                                       fontWeight: FontWeight.w400,
-                                      color:
-                                      Themes.getPrimaryColor(context),
+                                      color: Themes.getPrimaryColor(context),
                                     ),
                                   ),
                                 ],
@@ -548,13 +541,13 @@ class _LogInPageState extends State<LogInPage> {
               ),
               isLoading
                   ? Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.3),
-                  ),
-                  child: const Center(
-                      child: CircularProgressIndicator(
+                      height: MediaQuery.of(context).size.height,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.3),
+                      ),
+                      child: const Center(
+                          child: CircularProgressIndicator(
                         color: Colors.white,
                       )))
                   : Container()
